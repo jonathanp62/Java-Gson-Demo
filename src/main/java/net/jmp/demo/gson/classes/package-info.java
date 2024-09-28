@@ -1,8 +1,5 @@
-package net.jmp.demo.gson;
-
 /*
- * (#)Version.java  0.2.0   09/28/2024
- * (#)Version.java  0.1.0   09/28/2024
+ * (#)package-info.java 0.2.0   09/28/2024
  *
  * MIT License
  *
@@ -27,16 +24,9 @@ package net.jmp.demo.gson;
  * SOFTWARE.
  */
 
-/// The version class.
+/// The package that contains classes used
+/// for serialization and deserialization.
 ///
 /// @version    0.2.0
-/// @since      0.1.0
-final class Version {
-    /// The version.
-    static final String VERSION_STRING = "0.2.0";
-
-    /// The default constructor.
-    private Version() {
-        super();
-    }
-}
+/// @since      0.2.0
+package net.jmp.demo.gson.classes;

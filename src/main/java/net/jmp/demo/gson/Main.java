@@ -1,6 +1,7 @@
 package net.jmp.demo.gson;
 
 /*
+ * (#)Main.java 0.2.0   09/28/2024
  * (#)Main.java 0.1.0   09/28/2024
  *
  * MIT License
@@ -31,6 +32,9 @@ import java.util.Objects;
 
 import java.util.stream.Stream;
 
+import net.jmp.demo.gson.demos.AdaptersDemo;
+import net.jmp.demo.gson.demos.Demo;
+
 import static net.jmp.util.logging.LoggerUtils.*;
 
 import org.slf4j.Logger;
@@ -38,7 +42,7 @@ import org.slf4j.LoggerFactory;
 
 /// The main class.
 ///
-/// @version    0.1.0
+/// @version    0.2.0
 /// @since      0.1.0
 final class Main implements Runnable {
     /// The logger.
@@ -66,6 +70,7 @@ final class Main implements Runnable {
         }
 
         this.greeting();
+        this.runDemos();
 
         if (this.logger.isTraceEnabled()) {
             this.logger.trace(exit());
@@ -95,6 +100,21 @@ final class Main implements Runnable {
                 System.out.format("%s %s: %s%n", Name.NAME_STRING, Version.VERSION_STRING, Arrays.toString(this.arguments));
             }
         }
+
+        if (this.logger.isTraceEnabled()) {
+            this.logger.trace(exit());
+        }
+    }
+
+    /// Run the demonstration classes.
+    private void runDemos() {
+        if (this.logger.isTraceEnabled()) {
+            this.logger.trace(entry());
+        }
+
+        Stream.of(
+            new AdaptersDemo()
+        ).forEach(Demo::demo);
 
         if (this.logger.isTraceEnabled()) {
             this.logger.trace(exit());
