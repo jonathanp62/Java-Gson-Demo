@@ -1,0 +1,29 @@
+Gson Demo
+---------
+
+A program that demonstrates using Gson in a variety of ways, but mostly focused on writing adapters.
+
+Logging
+~~~~~~~
+
+Logging is achieved using the SLF4J facade over Logback. The logging configuration is supplied in *config/logback.xml*. It can be overriden with a java system property, i.e. *-Dlogback.configurationFile=config/logback.xml*
+
+== Demonstrated Concepts
+
+* Placeholder text
+
+== Additional Features
+
+* SLF4J extension features without org.slf4j.ext
+
+Gradle JavaExec Tasks
+~~~~~~~~~~~~~~~~~~~~~
+
+[options="header"]
+|=======================
+|Task Name              |Application Invocation
+|execute                |No arguments
+|=======================
+
+Current version: 0.1.0.
+~~~~~~~~~~~~~~~~~~~~~~~
