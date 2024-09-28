@@ -58,7 +58,7 @@ public final class AdaptersDemo implements Demo {
             this.logger.trace(entry());
         }
 
-        final String json = "{\"name\":\"Jonathan\", \"rollNo\":1}";
+        final String json = "{\"name\":\"Jonathan\",\"rollNo\":1}";
         final Student student = new Student();
 
         student.setName("Jonathan");

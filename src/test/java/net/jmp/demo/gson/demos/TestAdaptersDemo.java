@@ -26,7 +26,7 @@ package net.jmp.demo.gson.demos;
  * SOFTWARE.
  */
 
-import java.lang.reflect.InvocationTargetException;
+import net.jmp.demo.gson.classes.Student;
 
 import static net.jmp.util.testing.testutil.TestUtils.castToType;
 
@@ -39,4 +39,43 @@ import org.junit.Test;
 /// @version    0.2.0
 /// @since      0.2.0
 public final class TestAdaptersDemo {
+    @Test
+    public void testToStudent() throws Exception {
+        final var demo = new AdaptersDemo();
+        final var method = AdaptersDemo.class.getDeclaredMethod("deserializeStudent", String.class);
+
+        method.setAccessible(true);
+
+        final String json = "{\"name\":\"Jonathan\",\"rollNo\":1}";
+
+        final Object o = method.invoke(demo, json);
+        final Student student = castToType(Student.class, o);
+        final Student expected = new Student();
+
+        expected.setName("Jonathan");
+        expected.setRollNo(1);
+
+        assertNotNull(student);
+        assertEquals(expected, student);
+    }
+
+    @Test
+    public void testFromStudent() throws Exception {
+        final var demo = new AdaptersDemo();
+        final var method = AdaptersDemo.class.getDeclaredMethod("serializeStudent", Student.class);
+
+        method.setAccessible(true);
+
+        final Student student = new Student();
+
+        student.setName("Jonathan");
+        student.setRollNo(1);
+
+        final Object o = method.invoke(demo, student);
+        final String json = castToType(String.class, o);
+        final String expected = "{\n  \"name\": \"Jonathan\",\n  \"rollNo\": 1\n}";
+
+        assertNotNull(student);
+        assertEquals(expected, json);
+    }
 }
