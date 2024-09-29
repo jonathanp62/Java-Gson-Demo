@@ -28,6 +28,7 @@ package net.jmp.demo.gson.classes;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /// A club class.
 ///
@@ -67,6 +68,29 @@ public class Club {
     /// @return java.util.List<net.jmp.demo.gson.classes.Member>
     public List<Member> getMembers() {
         return this.members;
+    }
+
+    /// The equals method.
+    ///
+    /// @param  o   java.lang.Object
+    /// @return     boolean
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+
+        if (o == null || getClass() != o.getClass()) return false;
+
+        final Club club = (Club) o;
+
+        return Objects.equals(this.name, club.name) && Objects.equals(this.members, club.members);
+    }
+
+    /// The hash-code method.
+    ///
+    /// @return int
+    @Override
+    public int hashCode() {
+        return Objects.hash(this.name, this.members);
     }
 
     /// The to-string method.
