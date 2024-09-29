@@ -26,6 +26,9 @@ package net.jmp.demo.gson.demos;
  * SOFTWARE.
  */
 
+import net.jmp.demo.gson.classes.Club;
+import net.jmp.demo.gson.classes.GoldMember;
+import net.jmp.demo.gson.classes.SilverMember;
 import net.jmp.demo.gson.classes.Student;
 
 import static net.jmp.util.testing.testutil.TestUtils.castToType;
@@ -77,5 +80,34 @@ public final class TestAdaptersDemo {
 
         assertNotNull(student);
         assertEquals(expected, json);
+    }
+
+    @Test
+    public void testClub() throws Exception {
+        final var demo = new AdaptersDemo();
+        final var serializeMethod = AdaptersDemo.class.getDeclaredMethod("serializeClub", Club.class);
+        final var deserializeMethod = AdaptersDemo.class.getDeclaredMethod("deserializeClub", String.class);
+
+        serializeMethod.setAccessible(true);
+        deserializeMethod.setAccessible(true);
+
+        final Club myClub = new Club();
+
+        myClub.addMember(new SilverMember("Jamie", 39));
+        myClub.addMember(new GoldMember("Jonathan", 62));
+        myClub.addMember(new SilverMember("Kelli", 44));
+
+        Object o = serializeMethod.invoke(demo, myClub);
+
+        final String json = castToType(String.class, o);
+
+        assertNotNull(json);
+
+        o = deserializeMethod.invoke(demo, json);
+
+        final Club club = castToType(Club.class, o);
+
+        assertNotNull(club);
+        assertEquals(myClub, club);
     }
 }
