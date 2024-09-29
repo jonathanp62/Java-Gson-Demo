@@ -29,9 +29,11 @@ package net.jmp.demo.gson.demos;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import net.jmp.demo.gson.adapters.MemberDeserializer;
+import net.jmp.demo.gson.adapters.MemberSerializer;
 import net.jmp.demo.gson.adapters.StudentAdapter;
 
-import net.jmp.demo.gson.classes.Student;
+import net.jmp.demo.gson.classes.*;
 
 import static net.jmp.util.logging.LoggerUtils.*;
 
@@ -54,6 +56,20 @@ public final class AdaptersDemo implements Demo {
     /// The demo method.
     @Override
     public void demo() {
+        if (this.logger.isTraceEnabled()) {
+            this.logger.trace(entry());
+        }
+
+        this.student();
+        this.club();
+
+        if (this.logger.isTraceEnabled()) {
+            this.logger.trace(exit());
+        }
+    }
+
+    /// Demonstrate using the student.
+    private void student() {
         if (this.logger.isTraceEnabled()) {
             this.logger.trace(entry());
         }
@@ -83,7 +99,7 @@ public final class AdaptersDemo implements Demo {
             this.logger.trace(entryWith(json));
         }
 
-        final Gson gson = this.getGson();
+        final Gson gson = this.getGsonForStudent();
         final Student student = gson.fromJson(json, Student.class);
 
         if (this.logger.isTraceEnabled()) {
@@ -102,7 +118,7 @@ public final class AdaptersDemo implements Demo {
             this.logger.trace(entryWith(student));
         }
 
-        final Gson gson = this.getGson();
+        final Gson gson = this.getGsonForStudent();
         final String json = gson.toJson(student);
 
         if (this.logger.isTraceEnabled()) {
@@ -112,10 +128,11 @@ public final class AdaptersDemo implements Demo {
         return json;
     }
 
-    /// Build and return a configured Gson object.
+    /// Build and return a configured
+    /// Gson object for the student.
     ///
     /// @return com.google.gson.Gson
-    private Gson getGson() {
+    private Gson getGsonForStudent() {
         if (this.logger.isTraceEnabled()) {
             this.logger.trace(entry());
         }
@@ -123,6 +140,95 @@ public final class AdaptersDemo implements Demo {
         final GsonBuilder builder = new GsonBuilder();
 
         builder.registerTypeAdapter(Student.class, new StudentAdapter());
+        builder.setPrettyPrinting();
+
+        final Gson gson = builder.create();
+
+        if (this.logger.isTraceEnabled()) {
+            this.logger.trace(exitWith(gson));
+        }
+
+        return gson;
+    }
+
+    /// Demonstrate using the club.
+    private void club() {
+        if (this.logger.isTraceEnabled()) {
+            this.logger.trace(entry());
+        }
+
+        final Club myClub = new Club();
+
+        myClub.addMember(new SilverMember("Jamie", 39));
+        myClub.addMember(new GoldMember("Jonathan", 62));
+        myClub.addMember(new SilverMember("Kelli", 44));
+
+        final String json = this.serializeClub(myClub);
+
+        this.logger.info(json);
+
+        final Club club = this.deserializeClub(json);
+
+        if (this.logger.isInfoEnabled()) {
+            this.logger.info(club.toString());
+        }
+
+        if (this.logger.isTraceEnabled()) {
+            this.logger.trace(exit());
+        }
+    }
+
+    /// Serialize the club.
+    ///
+    /// @param  club    net.jmp.demo.gson.classes.Club
+    /// @return         java.lang.String
+    private String serializeClub(final Club club) {
+        if (this.logger.isTraceEnabled()) {
+            this.logger.trace(entryWith(club));
+        }
+
+        final Gson gson = this.getGsonForClubMember();
+        final String json = gson.toJson(club);
+
+        if (this.logger.isTraceEnabled()) {
+            this.logger.trace(exitWith(json));
+        }
+
+        return json;
+    }
+
+    /// Deserialize the club.
+    ///
+    /// @param  json    java.lang.String
+    /// @return         net.jmp.demo.gson.classes.Club
+    private Club deserializeClub(final String json) {
+        if (this.logger.isTraceEnabled()) {
+            this.logger.trace(entryWith(json));
+        }
+
+        final Gson gson = this.getGsonForClubMember();
+        final Club club = gson.fromJson(json, Club.class);
+
+        if (this.logger.isTraceEnabled()) {
+            this.logger.trace(exitWith(club));
+        }
+
+        return club;
+    }
+
+    /// Build and return a configured
+    /// Gson object for the club member.
+    ///
+    /// @return com.google.gson.Gson
+    private Gson getGsonForClubMember() {
+        if (this.logger.isTraceEnabled()) {
+            this.logger.trace(entry());
+        }
+
+        final GsonBuilder builder = new GsonBuilder();
+
+        builder.registerTypeAdapter(Member.class, new MemberDeserializer());
+        builder.registerTypeAdapter(Member.class, new MemberSerializer());
         builder.setPrettyPrinting();
 
         final Gson gson = builder.create();
