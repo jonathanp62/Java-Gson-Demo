@@ -1,9 +1,10 @@
 /*
+ * (#)build.gradle  0.3.0   09/30/2024
  * (#)build.gradle  0.2.0   09/28/2024
  * (#)build.gradle  0.1.0   09/28/2024
  *
  * @author   Jonathan Parker
- * @version  0.2.0
+ * @version  0.3.0
  * @since    0.1.0
  *
  * MIT License
@@ -86,7 +87,7 @@ dependencies {
 }
 
 group = 'net.jmp.demo.gson'
-version = '0.2.0'
+version = '0.3.0'
 description = 'Gson-Demo'
 
 println "The groupId is ${project.group}"
