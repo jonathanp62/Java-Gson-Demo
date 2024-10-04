@@ -29,11 +29,9 @@ package net.jmp.demo.gson.demos;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-import net.jmp.demo.gson.adapters.MemberDeserializer;
-import net.jmp.demo.gson.adapters.MemberSerializer;
 import net.jmp.demo.gson.adapters.StudentAdapter;
 
-import net.jmp.demo.gson.classes.*;
+import net.jmp.demo.gson.classes.Student;
 
 import static net.jmp.util.logging.LoggerUtils.*;
 
@@ -60,8 +58,172 @@ public final class NullDemo implements Demo {
             this.logger.trace(entry());
         }
 
+        if (this.logger.isInfoEnabled()) {
+            this.logger.info("No nulls: {}", this.toJsonWithoutNulls());
+            this.logger.info("No nulls: {}", this.toJsonWithoutNullsUsingAdapter());
+            this.logger.info("Nulls:    {}", this.toJsonWithNulls());
+            this.logger.info("Nulls:    {}", this.toJsonWithNullsUsingAdapter());
+
+            this.logger.info("No nulls: {}", this.fromJsonWithoutNulls().toString());
+            this.logger.info("Nulls:    {}", this.fromJsonWithNulls().toString());
+        }
+
         if (this.logger.isTraceEnabled()) {
             this.logger.trace(exit());
         }
+    }
+
+    /// Return a string of JSON without null serialization.
+    ///
+    /// @return java.lang.String
+    private String toJsonWithoutNulls() {
+        if (this.logger.isTraceEnabled()) {
+            this.logger.trace(entry());
+        }
+
+        final Gson gson = new Gson();
+        final Student student = new Student();
+
+        student.setRollNo(2);
+
+        final String json = gson.toJson(student);
+
+        if (this.logger.isTraceEnabled()) {
+            this.logger.trace(exitWith(json));
+        }
+
+        return json;
+    }
+
+    /// Return a string of JSON without null
+    /// serialization using the type adapter.
+    ///
+    /// @return java.lang.String
+    private String toJsonWithoutNullsUsingAdapter() {
+        if (this.logger.isTraceEnabled()) {
+            this.logger.trace(entry());
+        }
+
+        final GsonBuilder builder = new GsonBuilder();
+
+        builder.registerTypeAdapter(Student.class, new StudentAdapter());
+
+        final Gson gson = builder.create();
+
+        final Student student = new Student();
+
+        student.setRollNo(3);
+
+        final String json = gson.toJson(student);
+
+        if (this.logger.isTraceEnabled()) {
+            this.logger.trace(exitWith(json));
+        }
+
+        return json;
+    }
+
+    /// Return a string of JSON with null serialization.
+    ///
+    /// @return java.lang.String
+    private String toJsonWithNulls() {
+        if (this.logger.isTraceEnabled()) {
+            this.logger.trace(entry());
+        }
+
+        final GsonBuilder builder = new GsonBuilder();
+
+        builder.serializeNulls();
+
+        final Gson gson = builder.create();
+
+        final Student student = new Student();
+
+        student.setRollNo(4);
+
+        final String json = gson.toJson(student);
+
+        if (this.logger.isTraceEnabled()) {
+            this.logger.trace(exitWith(json));
+        }
+
+        return json;
+    }
+
+    /// Return a string of JSON with null
+    /// serialization using the type adapter.
+    ///
+    /// @return java.lang.String
+    private String toJsonWithNullsUsingAdapter() {
+        if (this.logger.isTraceEnabled()) {
+            this.logger.trace(entry());
+        }
+
+        final GsonBuilder builder = new GsonBuilder();
+
+        builder.serializeNulls();
+        builder.registerTypeAdapter(Student.class, new StudentAdapter());
+
+        final Gson gson = builder.create();
+
+        final Student student = new Student();
+
+        student.setRollNo(5);
+
+        final String json = gson.toJson(student);
+
+        if (this.logger.isTraceEnabled()) {
+            this.logger.trace(exitWith(json));
+        }
+
+        return json;
+    }
+
+    /// Return a student built with nulls.
+    ///
+    /// @return net.jmp.demo.gson.classes.Student
+    private Student fromJsonWithNulls() {
+        if (this.logger.isTraceEnabled()) {
+            this.logger.trace(entry());
+        }
+
+        final GsonBuilder builder = new GsonBuilder();
+
+        builder.registerTypeAdapter(Student.class, new StudentAdapter());
+
+        final Gson gson = builder.create();
+
+        final String json = "{\"rollNo\":6,\"name\":null}";
+        final Student student = gson.fromJson(json, Student.class);
+
+        if (this.logger.isTraceEnabled()) {
+            this.logger.trace(exitWith(student));
+        }
+
+        return student;
+    }
+
+    /// Return a student built without nulls.
+    ///
+    /// @return net.jmp.demo.gson.classes.Student
+    private Student fromJsonWithoutNulls() {
+        if (this.logger.isTraceEnabled()) {
+            this.logger.trace(exit());
+        }
+
+        final GsonBuilder builder = new GsonBuilder();
+
+        builder.registerTypeAdapter(Student.class, new StudentAdapter());
+
+        final Gson gson = builder.create();
+
+        final String json = "{\"rollNo\":7}";
+        final Student student = gson.fromJson(json, Student.class);
+
+        if (this.logger.isTraceEnabled()) {
+            this.logger.trace(exitWith(student));
+        }
+
+        return student;
     }
 }

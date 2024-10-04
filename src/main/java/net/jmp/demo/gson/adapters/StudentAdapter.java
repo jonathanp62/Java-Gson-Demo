@@ -1,6 +1,7 @@
 package net.jmp.demo.gson.adapters;
 
 /*
+ * (#)StudentAdapter.java   0.3.0   10/04/2024
  * (#)StudentAdapter.java   0.2.0   09/28/2024
  *
  * MIT License
@@ -43,7 +44,7 @@ import org.slf4j.LoggerFactory;
 
 /// A GsonType adapter for the Student class.
 ///
-/// @version    0.2.0
+/// @version    0.3.0
 /// @since      0.2.0
 public final class StudentAdapter extends TypeAdapter<Student> {
     /// The logger.
@@ -71,24 +72,45 @@ public final class StudentAdapter extends TypeAdapter<Student> {
         String currentFieldName = null;
 
         while (reader.hasNext()) {
-            JsonToken token = reader.peek();                // Move to next token
+            JsonToken token = reader.peek();                // Get current token
 
             if (token.equals(JsonToken.NAME)) {
-                currentFieldName = reader.nextName();       // The current token is the field name
+                // The current token is the field name
+                // Read it and move to the next token
+                // Which should be a value
+
+                currentFieldName = reader.nextName();
             }
 
             if ("name".equals(currentFieldName)) {
-                token = reader.peek();                      // Move to next token
+                token = reader.peek();                      // Get current token
 
                 if (token.equals(JsonToken.STRING)) {
+                    // The current token is a string value
+                    // Read it and move to the next token
+                    // Which should be a field name
+
                     student.setName(reader.nextString());   // Set the value
+                }
+
+                if (token.equals(JsonToken.NULL)) {
+                    // The current token is a null
+                    // Read it and move to the next token
+                    // Which should be a field name
+
+                    this.logger.debug("Null token: {}", token);
+                    reader.nextNull();                      // No value to set
                 }
             }
 
             if ("rollNo".equals(currentFieldName)) {
-                token = reader.peek();                      // Move to next token
+                token = reader.peek();                      // Get current token
 
                 if (token.equals(JsonToken.NUMBER)) {
+                    // The current token is a numeric value
+                    // Read it and move to the next token
+                    // Which should be a field name
+
                     student.setRollNo(reader.nextInt());    // Set the value
                 }
             }
@@ -115,8 +137,13 @@ public final class StudentAdapter extends TypeAdapter<Student> {
 
         writer.beginObject();
 
+        if (student.getName() == null) {
+            this.logger.debug("'name' was null");
+        }
+
         writer.name("name");
         writer.value(student.getName());
+
         writer.name("rollNo");
         writer.value(student.getRollNo());
 
