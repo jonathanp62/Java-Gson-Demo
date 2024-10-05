@@ -145,7 +145,7 @@ public class Person {
     @Override
     public String toString() {
         return "Person{" +
-                ", name='" + this.name + '\'' +
+                "name='" + this.name + '\'' +
                 ", address='" + this.address + '\'' +
                 ", age=" + this.age +
                 ", phone='" + this.phone + '\'' +

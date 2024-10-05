@@ -38,7 +38,6 @@ import org.junit.Test;
 ///
 /// @version    0.3.0
 /// @since      0.3.0
-
 public final class TestNullDemo {
     @Test
     public void testToJsonWithoutNulls() throws Exception {

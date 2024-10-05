@@ -1,6 +1,7 @@
 package net.jmp.demo.gson;
 
 /*
+ * (#)Main.java 0.4.0   10/05/2024
  * (#)Main.java 0.3.0   10/01/2024
  * (#)Main.java 0.2.0   09/28/2024
  * (#)Main.java 0.1.0   09/28/2024
@@ -33,9 +34,7 @@ import java.util.Objects;
 
 import java.util.stream.Stream;
 
-import net.jmp.demo.gson.demos.AdaptersDemo;
-import net.jmp.demo.gson.demos.Demo;
-import net.jmp.demo.gson.demos.NullDemo;
+import net.jmp.demo.gson.demos.*;
 
 import static net.jmp.util.logging.LoggerUtils.*;
 
@@ -116,7 +115,8 @@ final class Main implements Runnable {
 
         Stream.of(
             new AdaptersDemo(),
-                new NullDemo()
+                new NullDemo(),
+                new VersioningDemo()
         ).forEach(Demo::demo);
 
         if (this.logger.isTraceEnabled()) {
