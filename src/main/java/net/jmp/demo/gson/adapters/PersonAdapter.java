@@ -114,7 +114,7 @@ public class PersonAdapter extends TypeAdapter<Person> {
                     final double nameVersion = this.getFieldSince("name");
                     final String value = reader.nextString();
 
-                    if (this.version == 0 || nameVersion <= this.version) {
+                    if (this.version == 0 || this.version >= nameVersion) {
                         person.setName(value);              // Set the value
                     }
                 }
@@ -140,7 +140,7 @@ public class PersonAdapter extends TypeAdapter<Person> {
                     final double addressVersion = this.getFieldSince("address");
                     final String value = reader.nextString();
 
-                    if (this.version == 0 || addressVersion <= this.version) {
+                    if (this.version == 0 || this.version >= addressVersion) {
                         person.setAddress(value);           // Set the value
                     }
                 }
@@ -166,7 +166,7 @@ public class PersonAdapter extends TypeAdapter<Person> {
                     final double ageVersion = this.getFieldSince("age");
                     final int value = reader.nextInt();
 
-                    if (this.version == 0 || ageVersion <= this.version) {
+                    if (this.version == 0 || this.version >= ageVersion) {
                         person.setAge(value);               // Set the value
                     }
                 }
@@ -183,7 +183,7 @@ public class PersonAdapter extends TypeAdapter<Person> {
                     final double phoneVersion = this.getFieldSince("phone");
                     final String value = reader.nextString();
 
-                    if (this.version == 0 || phoneVersion <= this.version) {
+                    if (this.version == 0 || this.version >= phoneVersion) {
                         person.setPhone(value);             // Set the value
                     }
                 }
@@ -209,7 +209,7 @@ public class PersonAdapter extends TypeAdapter<Person> {
                     final double genderVersion = this.getFieldSince("gender");
                     final String value = reader.nextString();
 
-                    if (this.version == 0 || genderVersion <= this.version) {
+                    if (this.version == 0 || this.version >= genderVersion) {
                         if (value.equals("FEMALE")) {
                             person.setGender(Person.Gender.FEMALE);
                         } else if (value.equals("MALE")) {
@@ -254,32 +254,52 @@ public class PersonAdapter extends TypeAdapter<Person> {
             this.logger.debug("'name' was null");
         }
 
-        writer.name("name");
-        writer.value(person.getName());
+        final double nameVersion = this.getFieldSince("name");
+
+        if (this.version == 0 || this.version >= nameVersion) {
+            writer.name("name");
+            writer.value(person.getName());
+        }
 
         if (person.getAddress() == null) {
             this.logger.debug("'address' was null");
         }
 
-        writer.name("address");
-        writer.value(person.getAddress());
+        final double addressVersion = this.getFieldSince("address");
 
-        writer.name("age");
-        writer.value(person.getAge());
+        if (this.version == 0 || this.version >= addressVersion) {
+            writer.name("address");
+            writer.value(person.getAddress());
+        }
+
+        final double ageVersion = this.getFieldSince("age");
+
+        if (this.version == 0 || this.version >= ageVersion) {
+            writer.name("age");
+            writer.value(person.getAge());
+        }
+
+        final double phoneVersion = this.getFieldSince("phone");
 
         if (person.getPhone() == null) {
             this.logger.debug("'phone' was null");
         }
 
-        writer.name("phone");
-        writer.value(person.getPhone());
+        if (this.version == 0 || this.version >= phoneVersion) {
+            writer.name("phone");
+            writer.value(person.getPhone());
+        }
+
+        final double genderVersion = this.getFieldSince("gender");
 
         if (person.getGender() == null) {
             this.logger.debug("'gender' was null");
         }
 
-        writer.name("gender");
-        writer.value(person.getGender().toString());
+        if (this.version == 0 || this.version >= genderVersion) {
+            writer.name("gender");
+            writer.value(person.getGender().toString());
+        }
 
         writer.endObject();
 
