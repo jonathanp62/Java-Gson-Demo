@@ -29,6 +29,8 @@ package net.jmp.demo.gson.demos;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import net.jmp.demo.gson.adapters.PersonAdapter;
+
 import net.jmp.demo.gson.classes.Person;
 
 import static net.jmp.util.logging.LoggerUtils.*;
@@ -68,8 +70,10 @@ public final class VersioningDemo implements Demo {
 
         if (this.logger.isInfoEnabled()) {
             this.logger.info("V04:  {}", this.toJsonV04(person));
+            this.logger.info("V04:  {}", this.toJsonV04UsingAdapter(person));
             this.logger.info("V041: {}", this.toJsonV041(person));
             this.logger.info("V04:  {}", this.fromJsonV04(json));
+            this.logger.info("V04:  {}", this.fromJsonV04UsingAdapter(json));
             this.logger.info("V041: {}", this.fromJsonV041(json));
         }
 
@@ -90,6 +94,29 @@ public final class VersioningDemo implements Demo {
         final GsonBuilder builder = new GsonBuilder();
 
         builder.setVersion(0.4);
+
+        final Gson gson = builder.create();
+        final String json = gson.toJson(person);
+
+        if (this.logger.isTraceEnabled()) {
+            this.logger.trace(exitWith(json));
+        }
+
+        return json;
+    }
+
+    /// Return person 0.4 JSON using an adapter.
+    ///
+    /// @param  person  net.jmp.demo.gson.classes.Person
+    /// @return         java.lang.String
+    private String toJsonV04UsingAdapter(final Person person) {
+        if (this.logger.isTraceEnabled()) {
+            this.logger.trace(entryWith(person));
+        }
+
+        final GsonBuilder builder = new GsonBuilder();
+
+        builder.registerTypeAdapter(Person.class, new PersonAdapter());
 
         final Gson gson = builder.create();
         final String json = gson.toJson(person);
@@ -136,6 +163,29 @@ public final class VersioningDemo implements Demo {
         final GsonBuilder builder = new GsonBuilder();
 
         builder.setVersion(0.4);
+
+        final Gson gson = builder.create();
+        final Person person = gson.fromJson(json, Person.class);
+
+        if (this.logger.isTraceEnabled()) {
+            this.logger.trace(exitWith(person));
+        }
+
+        return person;
+    }
+
+    /// Return a person 0.4 object using an adapter.
+    ///
+    /// @param  json    java.lang.String
+    /// @return         net.jmp.demo.gson.classes.Person
+    private Person fromJsonV04UsingAdapter(final String json) {
+        if (this.logger.isTraceEnabled()) {
+            this.logger.trace(entryWith(json));
+        }
+
+        final GsonBuilder builder = new GsonBuilder();
+
+        builder.registerTypeAdapter(Person.class, new PersonAdapter(0.4));
 
         final Gson gson = builder.create();
         final Person person = gson.fromJson(json, Person.class);

@@ -43,16 +43,19 @@
     <logger name="net.jmp.demo.gson.Main" additivity="false" level="debug">
         <appender-ref ref="MAIN" />
     </logger>
+    <logger name="net.jmp.demo.gson.adapters.PersonAdapter" additivity="false" level="debug">
+        <appender-ref ref="MAIN" />
+    </logger>
     <logger name="net.jmp.demo.gson.adapters.StudentAdapter" additivity="false" level="debug">
         <appender-ref ref="MAIN" />
     </logger>
-    <logger name="net.jmp.demo.gson.demos.AdaptersDemo" additivity="false" level="info">
+    <logger name="net.jmp.demo.gson.demos.AdaptersDemo" additivity="false" level="debug">
         <appender-ref ref="MAIN" />
     </logger>
-    <logger name="net.jmp.demo.gson.demos.NullDemo" additivity="false" level="info">
+    <logger name="net.jmp.demo.gson.demos.NullDemo" additivity="false" level="debug">
         <appender-ref ref="MAIN" />
     </logger>
-    <logger name="net.jmp.demo.gson.demos.VersioningDemo" additivity="false" level="info">
+    <logger name="net.jmp.demo.gson.demos.VersioningDemo" additivity="false" level="debug">
         <appender-ref ref="MAIN" />
     </logger>
 
