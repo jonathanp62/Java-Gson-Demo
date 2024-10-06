@@ -116,7 +116,7 @@ public final class VersioningDemo implements Demo {
 
         final GsonBuilder builder = new GsonBuilder();
 
-        builder.registerTypeAdapter(Person.class, new PersonAdapter());
+        builder.registerTypeAdapter(Person.class, new PersonAdapter(0.4));
 
         final Gson gson = builder.create();
         final String json = gson.toJson(person);

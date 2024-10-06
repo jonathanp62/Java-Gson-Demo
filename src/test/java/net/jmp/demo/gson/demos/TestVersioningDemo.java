@@ -26,6 +26,11 @@ package net.jmp.demo.gson.demos;
  * SOFTWARE.
  */
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
+import net.jmp.demo.gson.adapters.PersonAdapter;
+
 import net.jmp.demo.gson.classes.Person;
 
 import static net.jmp.util.testing.testutil.TestUtils.castToType;
@@ -71,6 +76,20 @@ public final class TestVersioningDemo {
     }
 
     @Test
+    public void testToJsonV04UsingAdapter() throws Exception {
+        final var demo = new VersioningDemo();
+        final var method = VersioningDemo.class.getDeclaredMethod("toJsonV04UsingAdapter", Person.class);
+
+        method.setAccessible(true);
+
+        final Object o = method.invoke(demo, this.person);
+        final String jsonResult = castToType(String.class, o);
+
+        assertNotNull(jsonResult);
+        assertEquals("{\"name\":\"Jonathan\",\"address\":\"Lantana Drive\",\"age\":62}", jsonResult);
+    }
+
+    @Test
     public void testToJsonV041() throws Exception {
         final var demo = new VersioningDemo();
         final var method = VersioningDemo.class.getDeclaredMethod("toJsonV041", Person.class);
@@ -85,9 +104,53 @@ public final class TestVersioningDemo {
     }
 
     @Test
+    public void testToJsonV041UsingAdapter() throws Exception {
+        final GsonBuilder builder = new GsonBuilder();
+
+        builder.registerTypeAdapter(Person.class, new PersonAdapter(0.41));
+
+        final Gson gson = builder.create();
+        final String result = gson.toJson(person);
+
+        assertNotNull(result);
+        assertEquals(result, this.json);
+    }
+
+    @Test
+    public void testToJsonUsingAdapter() throws Exception {
+        final GsonBuilder builder = new GsonBuilder();
+
+        builder.registerTypeAdapter(Person.class, new PersonAdapter());
+
+        final Gson gson = builder.create();
+        final String result = gson.toJson(person);
+
+        assertNotNull(result);
+        assertEquals(result, this.json);
+    }
+
+    @Test
     public void testFromJsonV04() throws Exception {
         final var demo = new VersioningDemo();
         final var method = VersioningDemo.class.getDeclaredMethod("fromJsonV04", String.class);
+
+        method.setAccessible(true);
+
+        final Object o = method.invoke(demo, this.json);
+        final Person personResult = castToType(Person.class, o);
+
+        assertNotNull(personResult);
+        assertEquals("Jonathan", personResult.getName());
+        assertEquals("Lantana Drive", personResult.getAddress());
+        assertEquals(62, personResult.getAge());
+        assertNull(personResult.getPhone());
+        assertNull(personResult.getGender());
+    }
+
+    @Test
+    public void testFromJsonV04UsingAdapter() throws Exception {
+        final var demo = new VersioningDemo();
+        final var method = VersioningDemo.class.getDeclaredMethod("fromJsonV04UsingAdapter", String.class);
 
         method.setAccessible(true);
 
@@ -118,5 +181,31 @@ public final class TestVersioningDemo {
         assertEquals(62, personResult.getAge());
         assertEquals("555-123-4567", personResult.getPhone());
         assertEquals(Person.Gender.MALE, personResult.getGender());
+    }
+
+    @Test
+    public void testFromJsonV041UsingAdapter() throws Exception {
+        final GsonBuilder builder = new GsonBuilder();
+
+        builder.registerTypeAdapter(Person.class, new PersonAdapter(0.41));
+
+        final Gson gson = builder.create();
+        final Person result = gson.fromJson(this.json, Person.class);
+
+        assertNotNull(result);
+        assertEquals(result, this.person);
+    }
+
+    @Test
+    public void testFromJsonUsingAdapter() throws Exception {
+        final GsonBuilder builder = new GsonBuilder();
+
+        builder.registerTypeAdapter(Person.class, new PersonAdapter());
+
+        final Gson gson = builder.create();
+        final Person result = gson.fromJson(this.json, Person.class);
+
+        assertNotNull(result);
+        assertEquals(result, this.person);
     }
 }
