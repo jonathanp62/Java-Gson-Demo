@@ -33,6 +33,7 @@ module gson.demo.main {
     requires java.base;
 
     requires com.google.gson;
+    requires extra.utilities;
     requires logging.utilities;
     requires org.slf4j;
 }

@@ -1,11 +1,12 @@
 /*
+ * (#)build.gradle  0.5.0   10/06/2024
  * (#)build.gradle  0.4.0   10/05/2024
  * (#)build.gradle  0.3.0   09/30/2024
  * (#)build.gradle  0.2.0   09/28/2024
  * (#)build.gradle  0.1.0   09/28/2024
  *
  * @author   Jonathan Parker
- * @version  0.4.0
+ * @version  0.5.0
  * @since    0.1.0
  *
  * MIT License
@@ -81,6 +82,7 @@ dependencies {
     runtimeOnly         libs.ch.qos.logback.logback.classic
     runtimeOnly         libs.ch.qos.logback.logback.core
     implementation      libs.com.google.code.gson.gson
+    implementation      libs.net.jmp.util.extra.extra.utilities
     implementation      libs.net.jmp.util.logging.logging.utilities
     implementation      libs.org.slf4j.slf4j.api
     testImplementation  libs.junit.junit
@@ -88,7 +90,7 @@ dependencies {
 }
 
 group = 'net.jmp.demo.gson'
-version = '0.4.0'
+version = '0.5.0'
 description = 'Gson-Demo'
 
 println "The groupId is ${project.group}"
