@@ -32,9 +32,36 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
-/// The test class for NullDemo.
+/// The test class for TypeTokenDemo.
 ///
 /// @version    0.5.0
 /// @since      0.5.0
 public final class TestTypeTokenDemo {
+    @Test
+    public void testToWrappedStringObject() throws Exception {
+        final var demo = new TypeTokenDemo();
+        final var method = TypeTokenDemo.class.getDeclaredMethod("toWrappedStringObject");
+
+        method.setAccessible(true);
+
+        final Object o = method.invoke(demo);
+        final String json = castToType(String.class, o);
+
+        assertNotNull(json);
+        assertEquals("{\"object\":\"Hello, world\"}", json);
+    }
+
+    @Test
+    public void testFromWrappedStringObject() throws Exception {
+        final var demo = new TypeTokenDemo();
+        final var method = TypeTokenDemo.class.getDeclaredMethod("fromWrappedStringObject");
+
+        method.setAccessible(true);
+
+        final Object o = method.invoke(demo);
+        final String wrapped = castToType(String.class, o);
+
+        assertNotNull(wrapped);
+        assertEquals("Some string content", wrapped);
+    }
 }

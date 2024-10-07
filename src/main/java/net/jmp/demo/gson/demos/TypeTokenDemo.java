@@ -27,7 +27,12 @@ package net.jmp.demo.gson.demos;
  */
 
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+
+import com.google.gson.reflect.TypeToken;
+
+import java.lang.reflect.Type;
+
+import net.jmp.util.extra.WrappedObject;
 
 import static net.jmp.util.logging.LoggerUtils.*;
 
@@ -54,8 +59,59 @@ public final class TypeTokenDemo implements Demo {
             this.logger.trace(entry());
         }
 
+        if (this.logger.isInfoEnabled()) {
+            this.logger.info("wrapped: {}", this.toWrappedStringObject());
+            this.logger.info("object: {}", this.fromWrappedStringObject());
+        }
+
         if (this.logger.isTraceEnabled()) {
             this.logger.trace(exit());
         }
+    }
+
+    /// Serialize a wrapped object
+    /// to JSON and return it. The
+    /// JSON key for a wrapped
+    /// object is 'object'.
+    ///
+    /// @return java.lang.String
+    private String toWrappedStringObject() {
+        if (this.logger.isTraceEnabled()) {
+            this.logger.trace(entry());
+        }
+
+        final Gson gson = new Gson();
+        final Type typeToken = new TypeToken<WrappedObject<String>>() {}.getType();
+        final WrappedObject<String> string = new WrappedObject<>("Hello, world");
+        final String json = gson.toJson(string, typeToken);
+
+        if (this.logger.isTraceEnabled()) {
+            this.logger.trace(exitWith(json));
+        }
+
+        return json;
+    }
+
+    /// Deserialize a wrapped object
+    /// from JSON and return it. The
+    /// JSON key for a wrapped object
+    /// is 'object'.
+    ///
+    /// @return java.lang.String
+    private String fromWrappedStringObject() {
+        if (this.logger.isTraceEnabled()) {
+            this.logger.trace(entry());
+        }
+
+        final Gson gson = new Gson();
+        final Type typeToken = new TypeToken<WrappedObject<String>>() {}.getType();
+        final String json = "{\"object\":\"Some string content\"}";
+        final WrappedObject<String> wrapped = gson.fromJson(json, typeToken);
+
+        if (this.logger.isTraceEnabled()) {
+            this.logger.trace(exitWith(wrapped.get()));
+        }
+
+        return wrapped.get();
     }
 }
