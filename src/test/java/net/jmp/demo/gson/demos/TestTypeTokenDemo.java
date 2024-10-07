@@ -64,4 +64,44 @@ public final class TestTypeTokenDemo {
         assertNotNull(wrapped);
         assertEquals("Some string content", wrapped);
     }
+
+    @Test
+    public void testToWrappedIntegerObject() throws Exception {
+
+    }
+
+    @Test
+    public void testFromWrappedIntegerObject() throws Exception {
+
+    }
+
+    @Test
+    public void testToListOfStrings() throws Exception {
+
+    }
+
+    @Test
+    public void testFromListOfStrings() throws Exception {
+
+    }
+
+    @Test
+    public void testToListOfWrappedIntegers() throws Exception {
+
+    }
+
+    @Test
+    public void testFromListOfWrappedIntegers() throws Exception {
+
+    }
+
+    @Test
+    public void testToMap() throws Exception {
+
+    }
+
+    @Test
+    public void testFromMap() throws Exception {
+
+    }
 }

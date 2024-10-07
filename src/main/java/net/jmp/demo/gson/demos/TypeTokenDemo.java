@@ -31,6 +31,12 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
 
 import net.jmp.util.extra.WrappedObject;
 
@@ -63,6 +69,36 @@ public final class TypeTokenDemo implements Demo {
             this.logger.info("wrapped: {}", this.toWrappedStringObject());
             this.logger.info("object: {}", this.fromWrappedStringObject());
         }
+
+        Date date = new Date();
+
+        this.logger.info(date.toString());
+
+        // Specify the desired format
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS");
+
+        // Convert Date to Instant
+        Instant instant = date.toInstant();
+
+        // Convert Instant to LocalDateTime
+        LocalDateTime localDateTime = LocalDateTime.ofInstant(instant, ZoneId.systemDefault());
+
+        // Format LocalDateTime to string
+        String formattedDate = localDateTime.format(formatter);
+
+        this.logger.info(formattedDate);
+
+        LocalDateTime reconstructed = LocalDateTime.parse(formattedDate, formatter);
+        ZonedDateTime zonedDateTime = reconstructed.atZone(ZoneId.systemDefault());
+        Date reconstructedDate = Date.from(zonedDateTime.toInstant());
+
+        if (date.equals(reconstructedDate)) {
+            this.logger.info("reconstructedDate == date");
+        } else {
+            this.logger.info(reconstructedDate.toString());
+        }
+
+        this.logger.info(String.valueOf(date.compareTo(reconstructedDate)));
 
         if (this.logger.isTraceEnabled()) {
             this.logger.trace(exit());
