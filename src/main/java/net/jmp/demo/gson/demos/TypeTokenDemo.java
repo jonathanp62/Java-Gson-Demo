@@ -31,12 +31,8 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
-import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.Date;
+
+import java.util.List;
 
 import net.jmp.util.extra.WrappedObject;
 
@@ -68,37 +64,13 @@ public final class TypeTokenDemo implements Demo {
         if (this.logger.isInfoEnabled()) {
             this.logger.info("wrapped: {}", this.toWrappedStringObject());
             this.logger.info("object: {}", this.fromWrappedStringObject());
+            this.logger.info("wrapped: {}", this.toWrappedIntegerObject());
+            this.logger.info("object: {}", this.fromWrappedIntegerObject());
+            this.logger.info("list: {}", this.toListOfStrings());
+            this.logger.info("list: {}", this.fromListOfStrings());
+            this.logger.info("list: {}", this.toListOfWrappedIntegers());
+            this.logger.info("list: {}", this.fromListOfWrappedIntegers());
         }
-
-        Date date = new Date();
-
-        this.logger.info(date.toString());
-
-        // Specify the desired format
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS");
-
-        // Convert Date to Instant
-        Instant instant = date.toInstant();
-
-        // Convert Instant to LocalDateTime
-        LocalDateTime localDateTime = LocalDateTime.ofInstant(instant, ZoneId.systemDefault());
-
-        // Format LocalDateTime to string
-        String formattedDate = localDateTime.format(formatter);
-
-        this.logger.info(formattedDate);
-
-        LocalDateTime reconstructed = LocalDateTime.parse(formattedDate, formatter);
-        ZonedDateTime zonedDateTime = reconstructed.atZone(ZoneId.systemDefault());
-        Date reconstructedDate = Date.from(zonedDateTime.toInstant());
-
-        if (date.equals(reconstructedDate)) {
-            this.logger.info("reconstructedDate == date");
-        } else {
-            this.logger.info(reconstructedDate.toString());
-        }
-
-        this.logger.info(String.valueOf(date.compareTo(reconstructedDate)));
 
         if (this.logger.isTraceEnabled()) {
             this.logger.trace(exit());
@@ -149,5 +121,143 @@ public final class TypeTokenDemo implements Demo {
         }
 
         return wrapped.get();
+    }
+
+    /// Serialize a wrapped object
+    /// to JSON and return it. The
+    /// JSON key for a wrapped
+    /// object is 'object'.
+    ///
+    /// @return java.lang.String
+    private String toWrappedIntegerObject() {
+        if (this.logger.isTraceEnabled()) {
+            this.logger.trace(entry());
+        }
+
+        final Gson gson = new Gson();
+        final Type typeToken = new TypeToken<WrappedObject<Integer>>() {}.getType();
+        final WrappedObject<Integer> integer = new WrappedObject<>(12345);
+        final String json = gson.toJson(integer, typeToken);
+
+        if (this.logger.isTraceEnabled()) {
+            this.logger.trace(exitWith(json));
+        }
+
+        return json;
+    }
+
+    /// Deserialize a wrapped object
+    /// from JSON and return it. The
+    /// JSON key for a wrapped object
+    /// is 'object'.
+    ///
+    /// @return java.lang.Integer
+    private Integer fromWrappedIntegerObject() {
+        if (this.logger.isTraceEnabled()) {
+            this.logger.trace(entry());
+        }
+
+        final Gson gson = new Gson();
+        final Type typeToken = new TypeToken<WrappedObject<Integer>>() {}.getType();
+        final String json = "{\"object\":12345}";
+        final WrappedObject<Integer> wrapped = gson.fromJson(json, typeToken);
+
+        if (this.logger.isTraceEnabled()) {
+            this.logger.trace(exitWith(wrapped.get()));
+        }
+
+        return wrapped.get();
+    }
+
+    /// Serialize a list of strings
+    /// to JSON and return it.
+    ///
+    /// @return java.lang.String
+    private String toListOfStrings() {
+        if (this.logger.isTraceEnabled()) {
+            this.logger.trace(entry());
+        }
+
+        final Gson gson = new Gson();
+        final Type typeToken = new TypeToken<List<String>>() {}.getType();
+        final List<String> strings = List.of("one", "two", "three", "four", "five");
+        final String json = gson.toJson(strings, typeToken);
+
+        if (this.logger.isTraceEnabled()) {
+            this.logger.trace(exitWith(json));
+        }
+
+        return json;
+    }
+
+    /// Deserialize a list of strings
+    /// from JSON and return it.
+    ///
+    /// @return java.util.List<java.lang.String>
+    private List<String> fromListOfStrings() {
+        if (this.logger.isTraceEnabled()) {
+            this.logger.trace(entry());
+        }
+
+        final Gson gson = new Gson();
+        final Type typeToken = new TypeToken<List<String>>() {}.getType();
+        final String json = "[\"one\",\"two\",\"three\",\"four\",\"five\"]";
+        final List<String> list = gson.fromJson(json, typeToken);
+
+        if (this.logger.isTraceEnabled()) {
+            this.logger.trace(exitWith(list));
+        }
+
+        return list;
+    }
+
+    /// Serialize a list of wrapped integers
+    /// to JSON and return it.
+    ///
+    /// @return java.lang.String
+    private String toListOfWrappedIntegers() {
+        if (this.logger.isTraceEnabled()) {
+            this.logger.trace(entry());
+        }
+
+        final Gson gson = new Gson();
+        final Type typeToken = new TypeToken<List<WrappedObject<Integer>>>() {}.getType();
+
+        final List<WrappedObject<Integer>> list = List.of(
+                WrappedObject.of(1),
+                WrappedObject.of(2),
+                WrappedObject.of(3),
+                WrappedObject.of(4),
+                WrappedObject.of(5)
+        );
+
+        final String json = gson.toJson(list, typeToken);
+
+        if (this.logger.isTraceEnabled()) {
+            this.logger.trace(exitWith(json));
+        }
+
+        return json;
+    }
+
+    /// Deserialize a list of wrapped integers
+    /// from JSON and return it.
+    ///
+    /// @return java.util.List<net.jmp.util.extra.WrappedObject<java.lang.Integer>>
+    private List<WrappedObject<Integer>> fromListOfWrappedIntegers() {
+        if (this.logger.isTraceEnabled()) {
+            this.logger.trace(entry());
+        }
+
+        final Gson gson = new Gson();
+        final Type typeToken = new TypeToken<List<WrappedObject<Integer>>>() {}.getType();
+        final String json = "[{\"object\":1},{\"object\":2},{\"object\":3},{\"object\":4},{\"object\":5}]";
+        final List<WrappedObject<Integer>> list = gson.fromJson(json, typeToken);
+
+        if (this.logger.isTraceEnabled()) {
+            this.logger.trace(exitWith(list));
+        }
+
+        return list;
     }
 }

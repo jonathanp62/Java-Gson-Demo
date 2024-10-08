@@ -26,11 +26,16 @@ package net.jmp.demo.gson.demos;
  * SOFTWARE.
  */
 
+import net.jmp.util.extra.WrappedObject;
+
 import static net.jmp.util.testing.testutil.TestUtils.castToType;
+import static net.jmp.util.testing.testutil.TestUtils.listToTypedList;
 
 import static org.junit.Assert.*;
 
 import org.junit.Test;
+
+import java.util.List;
 
 /// The test class for TypeTokenDemo.
 ///
@@ -59,40 +64,108 @@ public final class TestTypeTokenDemo {
         method.setAccessible(true);
 
         final Object o = method.invoke(demo);
-        final String wrapped = castToType(String.class, o);
+        final String unwrapped = castToType(String.class, o);
 
-        assertNotNull(wrapped);
-        assertEquals("Some string content", wrapped);
+        assertNotNull(unwrapped);
+        assertEquals("Some string content", unwrapped);
     }
 
     @Test
     public void testToWrappedIntegerObject() throws Exception {
+        final var demo = new TypeTokenDemo();
+        final var method = TypeTokenDemo.class.getDeclaredMethod("toWrappedIntegerObject");
 
+        method.setAccessible(true);
+
+        final Object o = method.invoke(demo);
+        final String json = castToType(String.class, o);
+
+        assertNotNull(json);
+        assertEquals("{\"object\":12345}", json);
     }
 
     @Test
     public void testFromWrappedIntegerObject() throws Exception {
+        final var demo = new TypeTokenDemo();
+        final var method = TypeTokenDemo.class.getDeclaredMethod("fromWrappedIntegerObject");
 
+        method.setAccessible(true);
+
+        final Object o = method.invoke(demo);
+        final Integer unwrapped = castToType(Integer.class, o);
+
+        assertNotNull(unwrapped);
+        assertEquals(12345, (long) unwrapped);
     }
 
     @Test
     public void testToListOfStrings() throws Exception {
+        final var demo = new TypeTokenDemo();
+        final var method = TypeTokenDemo.class.getDeclaredMethod("toListOfStrings");
 
+        method.setAccessible(true);
+
+        final Object o = method.invoke(demo);
+        final String json = castToType(String.class, o);
+
+        assertNotNull(json);
+        assertEquals("[\"one\",\"two\",\"three\",\"four\",\"five\"]", json);
     }
 
     @Test
     public void testFromListOfStrings() throws Exception {
+        final var demo = new TypeTokenDemo();
+        final var method = TypeTokenDemo.class.getDeclaredMethod("fromListOfStrings");
 
+        method.setAccessible(true);
+
+        final Object o = method.invoke(demo);
+        final List<?> list = castToType(List.class, o);
+        final List<String> strings = listToTypedList(list, String.class);
+
+        assertNotNull(strings);
+
+        final List<String> expected = List.of("one", "two", "three", "four", "five");
+
+        assertEquals(expected, strings);
     }
 
     @Test
     public void testToListOfWrappedIntegers() throws Exception {
+        final var demo = new TypeTokenDemo();
+        final var method = TypeTokenDemo.class.getDeclaredMethod("toListOfWrappedIntegers");
 
+        method.setAccessible(true);
+
+        final Object o = method.invoke(demo);
+        final String json = castToType(String.class, o);
+
+        assertNotNull(json);
+        assertEquals("[{\"object\":1},{\"object\":2},{\"object\":3},{\"object\":4},{\"object\":5}]", json);
     }
 
     @Test
     public void testFromListOfWrappedIntegers() throws Exception {
+        final var demo = new TypeTokenDemo();
+        final var method = TypeTokenDemo.class.getDeclaredMethod("fromListOfWrappedIntegers");
 
+        method.setAccessible(true);
+
+        final Object o = method.invoke(demo);
+        final List<?> list = castToType(List.class, o);
+        final List<WrappedObject> objects = listToTypedList(list, WrappedObject.class);
+
+        assertNotNull(objects);
+
+        final List<WrappedObject<Integer>> expected = List.of(
+                WrappedObject.of(1),
+                WrappedObject.of(2),
+                WrappedObject.of(3),
+                WrappedObject.of(4),
+                WrappedObject.of(5)
+        );
+
+        assertEquals(expected, objects);
     }
 
     @Test
