@@ -35,6 +35,7 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /// The test class for TypeTokenDemo.
@@ -154,6 +155,11 @@ public final class TestTypeTokenDemo {
         final Object o = method.invoke(demo);
         final List<?> list = castToType(List.class, o);
         final List<WrappedObject> objects = listToTypedList(list, WrappedObject.class);
+        final List<WrappedObject<Integer>> typedObjects = new ArrayList<>();
+
+        for (final var object : objects) {
+            typedObjects.add(new WrappedObject<>(castToType(Integer.class, object.get())));
+        }
 
         assertNotNull(objects);
 
@@ -165,7 +171,7 @@ public final class TestTypeTokenDemo {
                 WrappedObject.of(5)
         );
 
-        assertEquals(expected, objects);
+        assertEquals(expected, typedObjects);
     }
 
     @Test
