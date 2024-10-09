@@ -33,6 +33,8 @@ import com.google.gson.reflect.TypeToken;
 import java.lang.reflect.Type;
 
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 import net.jmp.util.extra.WrappedObject;
 
@@ -70,6 +72,8 @@ public final class TypeTokenDemo implements Demo {
             this.logger.info("list: {}", this.fromListOfStrings());
             this.logger.info("list: {}", this.toListOfWrappedIntegers());
             this.logger.info("list: {}", this.fromListOfWrappedIntegers());
+            this.logger.info("map: {}", this.toMap());
+            this.logger.info("map: {}", this.fromMap());
         }
 
         if (this.logger.isTraceEnabled()) {
@@ -259,5 +263,54 @@ public final class TypeTokenDemo implements Demo {
         }
 
         return list;
+    }
+
+    /// Serialize a map of integers and
+    /// strings to JSON and return it.
+    ///
+    /// @return java.lang.String
+    private String toMap() {
+        if (this.logger.isTraceEnabled()) {
+            this.logger.trace(entry());
+        }
+
+        final Gson gson = new Gson();
+        final Type typeToken = new TypeToken<TreeMap<Integer, String>>() {}.getType();
+        final Map<Integer, String> map = new TreeMap<>();   // Used to order the key set
+
+        map.put(1, "Ada");
+        map.put(2, "Glenn");
+        map.put(3, "Jonathan");
+        map.put(4, "Timothy");
+        map.put(5, "Tweety");
+
+        final String json = gson.toJson(map, typeToken);
+
+        if (this.logger.isTraceEnabled()) {
+            this.logger.trace(exitWith(json));
+        }
+
+        return json;
+    }
+
+    /// Deserialize a map of integers and
+    /// strings from JSON and return it.
+    ///
+    /// @return java.util.Map<java.lang.Integer, java.lang.String>>
+    private Map<Integer, String> fromMap() {
+        if (this.logger.isTraceEnabled()) {
+            this.logger.trace(entry());
+        }
+
+        final Gson gson = new Gson();
+        final Type typeToken = new TypeToken<Map<Integer, String>>() {}.getType();
+        final String json = "{\"3\":\"Jonathan\",\"2\":\"Glenn\",\"1\":\"Ada\",\"5\":\"Tweety\",\"4\":\"Timothy\"}";
+        final Map<Integer, String> map = gson.fromJson(json, typeToken);
+
+        if (this.logger.isTraceEnabled()) {
+            this.logger.trace(exitWith(map));
+        }
+
+        return map;
     }
 }

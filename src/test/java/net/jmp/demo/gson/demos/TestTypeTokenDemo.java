@@ -28,8 +28,7 @@ package net.jmp.demo.gson.demos;
 
 import net.jmp.util.extra.WrappedObject;
 
-import static net.jmp.util.testing.testutil.TestUtils.castToType;
-import static net.jmp.util.testing.testutil.TestUtils.listToTypedList;
+import static net.jmp.util.testing.testutil.TestUtils.*;
 
 import static org.junit.Assert.*;
 
@@ -37,6 +36,7 @@ import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /// The test class for TypeTokenDemo.
 ///
@@ -176,11 +176,42 @@ public final class TestTypeTokenDemo {
 
     @Test
     public void testToMap() throws Exception {
+        final var demo = new TypeTokenDemo();
+        final var method = TypeTokenDemo.class.getDeclaredMethod("toMap");
 
+        method.setAccessible(true);
+
+        final Object o = method.invoke(demo);
+        final String json = castToType(String.class, o);
+
+        assertNotNull(json);
+        assertEquals("{\"1\":\"Ada\",\"2\":\"Glenn\",\"3\":\"Jonathan\",\"4\":\"Timothy\",\"5\":\"Tweety\"}", json);
     }
 
     @Test
     public void testFromMap() throws Exception {
+        final var demo = new TypeTokenDemo();
+        final var method = TypeTokenDemo.class.getDeclaredMethod("fromMap");
 
+        method.setAccessible(true);
+
+        final Object o = method.invoke(demo);
+        final Map<?,?> map = castToType(Map.class, o);
+        final Map<Integer, String> typedMap = mapToTypedMap(map, Integer.class, String.class);
+
+        assertNotNull(typedMap);
+        assertEquals(5, typedMap.size());
+
+        assertTrue(typedMap.containsKey(1));
+        assertTrue(typedMap.containsKey(2));
+        assertTrue(typedMap.containsKey(3));
+        assertTrue(typedMap.containsKey(4));
+        assertTrue(typedMap.containsKey(5));
+
+        assertEquals("Ada", typedMap.get(1));
+        assertEquals("Glenn", typedMap.get(2));
+        assertEquals("Jonathan", typedMap.get(3));
+        assertEquals("Timothy", typedMap.get(4));
+        assertEquals("Tweety", typedMap.get(5));
     }
 }
