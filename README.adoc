@@ -11,8 +11,10 @@ Logging is achieved using the SLF4J facade over Logback. The logging configurati
 == Demonstrated Concepts
 
 * Annotations
+  - Expose
   - SerializedName
   - Since
+  - Until
 * JsonDeserializer
 * JsonSerializer
 * Null Serialization
@@ -36,5 +38,5 @@ Gradle JavaExec Tasks
 |execute                |No arguments
 |=======================
 
-Current version: 0.6.0.
+Current version: 0.7.0.
 ~~~~~~~~~~~~~~~~~~~~~~~
