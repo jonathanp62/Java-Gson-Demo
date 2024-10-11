@@ -10,6 +10,9 @@ Logging is achieved using the SLF4J facade over Logback. The logging configurati
 
 == Demonstrated Concepts
 
+* Annotations
+  - SerializedName
+  - Since
 * JsonDeserializer
 * JsonSerializer
 * Null Serialization

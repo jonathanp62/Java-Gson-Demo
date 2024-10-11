@@ -26,6 +26,8 @@ package net.jmp.demo.gson.classes;
  * SOFTWARE.
  */
 
+import com.google.gson.annotations.SerializedName;
+
 import java.util.Objects;
 
 /// The developer class.
@@ -109,9 +111,11 @@ public class Developer {
     /// The name class.
     public static class Name {
         /// The first name.
+        @SerializedName("first-name")
         private String firstName;
 
         /// The last name.
+        @SerializedName("last-name")
         private String lastName;
 
         /// The default constructor.

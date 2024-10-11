@@ -100,7 +100,7 @@ public final class InnerClassDemo implements Demo {
             this.logger.trace(entry());
         }
 
-        final String json = "{\"firstName\":\"Jonathan\",\"lastName\":\"Parker\"}";
+        final String json = "{\"first-name\":\"Jonathan\",\"last-name\":\"Parker\"}";
         final Gson gson = new Gson();
         final Developer.Name name = gson.fromJson(json, Developer.Name.class);
 
@@ -148,7 +148,7 @@ public final class InnerClassDemo implements Demo {
             this.logger.trace(entry());
         }
 
-        final String json = "{\"name\":{\"firstName\":\"Jonathan\",\"lastName\":\"Parker\"},\"language\":\"Java\"}";
+        final String json = "{\"name\":{\"first-name\":\"Jonathan\",\"last-name\":\"Parker\"},\"language\":\"Java\"}";
         final Gson gson = new Gson();
         final Developer developer = gson.fromJson(json, Developer.class);
 
