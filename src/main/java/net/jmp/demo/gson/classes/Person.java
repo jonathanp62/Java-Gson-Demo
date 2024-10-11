@@ -1,6 +1,7 @@
 package net.jmp.demo.gson.classes;
 
 /*
+ * (#)Person.java   0.7.0   10/11/2024
  * (#)Person.java   0.4.0   10/05/2024
  *
  * MIT License
@@ -27,12 +28,13 @@ package net.jmp.demo.gson.classes;
  */
 
 import com.google.gson.annotations.Since;
+import com.google.gson.annotations.Until;
 
 import java.util.Objects;
 
 /// The person class.
 ///
-/// @version    0.4.0
+/// @version    0.7.0
 /// @since      0.4.0
 public class Person {
     /// An enumeration of genders.
@@ -63,6 +65,14 @@ public class Person {
     /// The gender.
     @Since(0.41)
     private Gender gender;
+
+    /// True when Ronin. This field
+    /// is handled up until version
+    /// 3.1, exclusive.
+    ///
+    /// @since  0.7.0
+    @Until(0.31)
+    private boolean ronin;
 
     /// The default constructor.
     public Person() {
@@ -139,6 +149,22 @@ public class Person {
         this.gender = gender;
     }
 
+    /// Get the Ronin status.
+    ///
+    /// @return boolean
+    /// @since  0.7.0
+    public boolean isRonin() {
+        return this.ronin;
+    }
+
+    /// Set the Ronin status.
+    ///
+    /// @param  ronin   boolean
+    /// @since          0.7.0
+    public void setRonin(final boolean ronin) {
+        this.ronin = ronin;
+    }
+
     /// The to-string method.
     ///
     /// @return java.lang.String
@@ -150,6 +176,7 @@ public class Person {
                 ", age=" + this.age +
                 ", phone='" + this.phone + '\'' +
                 ", gender=" + this.gender +
+                ", ronin=" + this.ronin +
                 '}';
     }
 
@@ -169,7 +196,8 @@ public class Person {
                 && this.gender == person.gender
                 && Objects.equals(this.address, person.address)
                 && Objects.equals(this.phone, person.phone)
-                && Objects.equals(this.name, person.name);
+                && Objects.equals(this.name, person.name)
+                && this.ronin == person.ronin;
     }
 
     /// The hash-code method.
@@ -177,6 +205,6 @@ public class Person {
     /// @return int
     @Override
     public int hashCode() {
-        return Objects.hash(this.name, this.address, this.age, this.phone, this.gender);
+        return Objects.hash(this.name, this.address, this.age, this.phone, this.gender, this.ronin);
     }
 }

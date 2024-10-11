@@ -1,6 +1,7 @@
 package net.jmp.demo.gson.demos;
 
 /*
+ * (#)TestVersioningDemo.java   0.7.0   10/11/2024
  * (#)TestVersioningDemo.java   0.4.0   10/05/2024
  *
  * MIT License
@@ -42,7 +43,7 @@ import org.junit.Test;
 
 /// The test class for VersioningDemo.
 ///
-/// @version    0.4.0
+/// @version    0.7.0
 /// @since      0.4.0
 public final class TestVersioningDemo {
     private Person person;
@@ -59,6 +60,20 @@ public final class TestVersioningDemo {
         this.person.setPhone("555-123-4567");
 
         this.json = "{\"name\":\"Jonathan\",\"address\":\"Lantana Drive\",\"age\":62,\"phone\":\"555-123-4567\",\"gender\":\"MALE\"}";
+    }
+
+    @Test
+    public void testToJsonV03() throws Exception {
+        final var demo = new VersioningDemo();
+        final var method = VersioningDemo.class.getDeclaredMethod("toJsonV03", Person.class);
+
+        method.setAccessible(true);
+
+        final Object o = method.invoke(demo, this.person);
+        final String jsonResult = castToType(String.class, o);
+
+        assertNotNull(jsonResult);
+        assertEquals("{\"ronin\":false}", jsonResult);
     }
 
     @Test

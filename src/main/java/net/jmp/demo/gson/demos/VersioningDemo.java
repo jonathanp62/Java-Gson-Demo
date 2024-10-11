@@ -2,6 +2,7 @@ package net.jmp.demo.gson.demos;
 
 /*
  * (#)VersioningDemo.java   0.4.0   10/05/2024
+ * (#)VersioningDemo.java   0.7.0   10/11/2024
  *
  * MIT License
  *
@@ -40,7 +41,7 @@ import org.slf4j.LoggerFactory;
 
 /// A class that demonstrates Gson versioning support.
 ///
-/// @version    0.4.0
+/// @version    0.7.0
 /// @since      0.4.0
 public final class VersioningDemo implements Demo {
     /// The logger.
@@ -69,6 +70,7 @@ public final class VersioningDemo implements Demo {
         final String json = "{\"name\":\"Jonathan\",\"address\":\"Lantana Drive\",\"age\":62,\"phone\":\"555-123-4567\",\"gender\":\"MALE\"}";
 
         if (this.logger.isInfoEnabled()) {
+            this.logger.info("V03:  {}", this.toJsonV03(person));
             this.logger.info("V04:  {}", this.toJsonV04(person));
             this.logger.info("V04:  {}", this.toJsonV04UsingAdapter(person));
             this.logger.info("V041: {}", this.toJsonV041(person));
@@ -80,6 +82,29 @@ public final class VersioningDemo implements Demo {
         if (this.logger.isTraceEnabled()) {
             this.logger.trace(exit());
         }
+    }
+
+    /// Return person 0.3 JSON.
+    ///
+    /// @param  person  net.jmp.demo.gson.classes.Person
+    /// @return         java.lang.String
+    private String toJsonV03(final Person person) {
+        if (this.logger.isTraceEnabled()) {
+            this.logger.trace(entryWith(person));
+        }
+
+        final GsonBuilder builder = new GsonBuilder();
+
+        builder.setVersion(0.3);
+
+        final Gson gson = builder.create();
+        final String json = gson.toJson(person);
+
+        if (this.logger.isTraceEnabled()) {
+            this.logger.trace(exitWith(json));
+        }
+
+        return json;
     }
 
     /// Return person 0.4 JSON.
