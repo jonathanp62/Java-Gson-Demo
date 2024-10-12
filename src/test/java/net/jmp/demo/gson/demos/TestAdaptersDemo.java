@@ -26,10 +26,7 @@ package net.jmp.demo.gson.demos;
  * SOFTWARE.
  */
 
-import net.jmp.demo.gson.classes.Club;
-import net.jmp.demo.gson.classes.GoldMember;
-import net.jmp.demo.gson.classes.SilverMember;
-import net.jmp.demo.gson.classes.Student;
+import net.jmp.demo.gson.classes.*;
 
 import static net.jmp.util.testing.testutil.TestUtils.castToType;
 
@@ -78,7 +75,7 @@ public final class TestAdaptersDemo {
         final String json = castToType(String.class, o);
         final String expected = "{\n  \"name\": \"Jonathan\",\n  \"rollNo\": 1\n}";
 
-        assertNotNull(student);
+        assertNotNull(json);
         assertEquals(expected, json);
     }
 
@@ -109,5 +106,48 @@ public final class TestAdaptersDemo {
 
         assertNotNull(club);
         assertEquals(myClub, club);
+    }
+
+    @Test
+    public void testSerializedPet() throws Exception {
+        final var demo = new AdaptersDemo();
+        final var method = AdaptersDemo.class.getDeclaredMethod("serializePet", Pet.class);
+
+        method.setAccessible(true);
+
+        final Pet pet = new Pet();
+
+        pet.setName("Lady");
+        pet.setType("German Shepherd Dog");
+        pet.setAge(12);
+
+        final Object o = method.invoke(demo, pet);
+        final String json = castToType(String.class, o);
+        final String expected = "{\"name\":\"Lady\",\"type\":\"German Shepherd Dog\",\"age\":12}";
+
+        assertNotNull(json);
+        assertEquals(expected, json);
+    }
+
+    @Test
+    public void testDeserializePet() throws Exception {
+        final var demo = new AdaptersDemo();
+        final var method = AdaptersDemo.class.getDeclaredMethod("deserializePet", String.class);
+
+        method.setAccessible(true);
+
+        final String json = "{\"name\":\"Ace\",\"type\":\"Maine Coon Cat\",\"age\":15}";
+
+        final Object o = method.invoke(demo, json);
+        final Pet pet = castToType(Pet.class, o);
+
+        final Pet expected = new Pet();
+
+        expected.setName("Ace");
+        expected.setAge(15);
+        expected.setType("Maine Coon Cat");
+
+        assertNotNull(pet);
+        assertEquals(expected, pet);
     }
 }
