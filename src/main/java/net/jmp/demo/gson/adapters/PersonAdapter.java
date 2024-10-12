@@ -43,7 +43,7 @@ import static net.jmp.util.logging.LoggerUtils.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-/// A GsonType adapter for the Person class. It is
+/// A Gson type adapter for the Person class. It is
 /// possible to set a version in a constructor. If
 /// the version is 0, then all fields are included.
 /// If the version is greater than 0, then fields

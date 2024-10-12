@@ -1,8 +1,7 @@
 package net.jmp.demo.gson.adapters;
 
 /*
- * (#)StudentAdapter.java   0.3.0   10/04/2024
- * (#)StudentAdapter.java   0.2.0   09/28/2024
+ * (#)PetAdapter.java   0.7.0   10/12/2024
  *
  * MIT License
  *
@@ -35,37 +34,65 @@ import com.google.gson.stream.JsonWriter;
 
 import java.io.IOException;
 
-import net.jmp.demo.gson.classes.Student;
+import net.jmp.demo.gson.classes.Pet;
 
 import static net.jmp.util.logging.LoggerUtils.*;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-/// A Gson type adapter for the Student class.
+/// A Gson type adapter for the Pet class.
 ///
-/// @version    0.3.0
-/// @since      0.2.0
-public final class StudentAdapter extends TypeAdapter<Student> {
+/// @version    0.7.0
+/// @since      0.7.0
+public final class PetAdapter extends TypeAdapter<Pet> {
     /// The logger.
     private final Logger logger = LoggerFactory.getLogger(this.getClass().getName());
 
     /// The default constructor.
-    public StudentAdapter() {
+    public PetAdapter() {
         super();
     }
 
-    /// Read (deserialize) the JSON and return a new Student.
+    /// Write (serialize) the Pet into JSON.
+    ///
+    /// @param  writer  com.google.gson.stream.JsonWriter
+    /// @param  pet     net.jmp.demo.gson.classes.Pet
+    @Override
+    public void write(final JsonWriter writer, final Pet pet) throws IOException {
+        if (this.logger.isTraceEnabled()) {
+            this.logger.trace(entryWith(writer, pet));
+        }
+
+        writer.beginObject();
+
+        writer.name("name");
+        writer.value(pet.getName());
+
+        writer.name("type");
+        writer.value(pet.getType());
+
+        writer.name("age");
+        writer.value(pet.getAge());
+
+        writer.endObject();
+
+        if (this.logger.isTraceEnabled()) {
+            this.logger.trace(exit());
+        }
+    }
+
+    /// Read (deserialize) the JSON and return a new Pet.
     ///
     /// @param reader   com.google.gson.stream.JsonReader
-    /// @return         net.jmp.demo.gson.classes.Student
+    /// @return         net.jmp.demo.gson.classes.Pet
     @Override
-    public Student read(final JsonReader reader) throws IOException {
+    public Pet read(final JsonReader reader) throws IOException {
         if (this.logger.isTraceEnabled()) {
             this.logger.trace(entryWith(reader));
         }
 
-        final Student student = new Student();
+        final Pet pet = new Pet();
 
         reader.beginObject();
 
@@ -90,7 +117,7 @@ public final class StudentAdapter extends TypeAdapter<Student> {
                     // Read it and move to the next token
                     // Which should be a field name
 
-                    student.setName(reader.nextString());   // Set the value
+                    pet.setName(reader.nextString());       // Set the value
                 }
 
                 if (token.equals(JsonToken.NULL)) {
@@ -103,7 +130,28 @@ public final class StudentAdapter extends TypeAdapter<Student> {
                 }
             }
 
-            if ("rollNo".equals(currentFieldName)) {
+            if ("type".equals(currentFieldName)) {
+                token = reader.peek();                      // Get current token
+
+                if (token.equals(JsonToken.STRING)) {
+                    // The current token is a string value
+                    // Read it and move to the next token
+                    // Which should be a field name
+
+                    pet.setType(reader.nextString());       // Set the value
+                }
+
+                if (token.equals(JsonToken.NULL)) {
+                    // The current token is a null
+                    // Read it and move to the next token
+                    // Which should be a field name
+
+                    this.logger.debug("Null token: {}", token);
+                    reader.nextNull();                      // No value to set
+                }
+            }
+
+            if ("age".equals(currentFieldName)) {
                 token = reader.peek();                      // Get current token
 
                 if (token.equals(JsonToken.NUMBER)) {
@@ -111,7 +159,7 @@ public final class StudentAdapter extends TypeAdapter<Student> {
                     // Read it and move to the next token
                     // Which should be a field name
 
-                    student.setRollNo(reader.nextInt());    // Set the value
+                    pet.setAge(reader.nextInt());           // Set the value
                 }
             }
         }
@@ -119,38 +167,9 @@ public final class StudentAdapter extends TypeAdapter<Student> {
         reader.endObject();
 
         if (this.logger.isTraceEnabled()) {
-            this.logger.trace(exitWith(reader));
+            this.logger.trace(exitWith(pet));
         }
 
-        return student;
-    }
-
-    /// Write (serialize) the Student into JSON.
-    ///
-    /// @param  writer  com.google.gson.stream.JsonWriter
-    /// @param  student net.jmp.demo.gson.classes.Student
-    @Override
-    public void write(final JsonWriter writer, final Student student) throws IOException {
-        if (this.logger.isTraceEnabled()) {
-            this.logger.trace(entryWith(writer, student));
-        }
-
-        writer.beginObject();
-
-        if (student.getName() == null) {
-            this.logger.debug("'name' was null");
-        }
-
-        writer.name("name");
-        writer.value(student.getName());
-
-        writer.name("rollNo");
-        writer.value(student.getRollNo());
-
-        writer.endObject();
-
-        if (this.logger.isTraceEnabled()) {
-            this.logger.trace(exit());
-        }
+        return pet;
     }
 }

@@ -62,6 +62,7 @@ public final class AdaptersDemo implements Demo {
 
         this.student();
         this.club();
+        this.pet();
 
         if (this.logger.isTraceEnabled()) {
             this.logger.trace(exit());
@@ -238,5 +239,74 @@ public final class AdaptersDemo implements Demo {
         }
 
         return gson;
+    }
+
+    /// Demonstrate using the pet.
+    ///
+    /// @since  0.7.0
+    private void pet() {
+        if (this.logger.isTraceEnabled()) {
+            this.logger.trace(entry());
+        }
+
+        final Pet myPet = new Pet();
+
+        myPet.setName("Tweety");
+        myPet.setType("Parakeet");
+        myPet.setAge(10);
+
+        final String json = this.serializePet(myPet);
+
+        this.logger.info(json);
+
+        final Pet pet = this.deserializePet(json);
+
+        if (this.logger.isInfoEnabled()) {
+            this.logger.info(pet.toString());
+        }
+
+        if (this.logger.isTraceEnabled()) {
+            this.logger.trace(exit());
+        }
+    }
+
+    /// Serialize the pet into JSON.
+    ///
+    /// @param  pet net.jmp.demo.gson.classes.Pet
+    /// @return     java.lang.String
+    /// @since      0.7.0
+    private String serializePet(final Pet pet) {
+        if (this.logger.isTraceEnabled()) {
+            this.logger.trace(entryWith(pet));
+        }
+
+        final Gson gson = new Gson();
+        final String json = gson.toJson(pet);
+
+        if (this.logger.isTraceEnabled()) {
+            this.logger.trace(exitWith(json));
+        }
+
+        return json;
+    }
+
+    /// Deserialize the JSON into a pet.
+    ///
+    /// @param  json    java.lang.String
+    /// @return         net.jmp.demo.gson.classes.Pet
+    /// @since          0.7.0
+    private Pet deserializePet(final String json) {
+        if (this.logger.isTraceEnabled()) {
+            this.logger.trace(entryWith(json));
+        }
+
+        final Gson gson = new Gson();
+        final Pet pet = gson.fromJson(json, Pet.class);
+
+        if (this.logger.isTraceEnabled()) {
+            this.logger.trace(exitWith(pet));
+        }
+
+        return pet;
     }
 }
