@@ -26,12 +26,17 @@ package net.jmp.demo.gson.demos;
  * SOFTWARE.
  */
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
+import net.jmp.demo.gson.classes.User;
+
 import static net.jmp.util.logging.LoggerUtils.*;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-/// A class that demonstrates @Expose annotation.
+/// A class that demonstrates the Expose annotation.
 ///
 /// @version    0.7.0
 /// @since      0.7.0
@@ -51,8 +56,91 @@ public final class ExposeDemo implements Demo {
             this.logger.trace(entry());
         }
 
+        if (this.logger.isInfoEnabled()) {
+            this.logger.info("Ignored: {}", this.toJsonIgnoreExpose());
+            this.logger.info("Exposed: {}", this.toJson());
+            this.logger.info("Exposed: {}", this.fromJson());
+        }
+
         if (this.logger.isTraceEnabled()) {
             this.logger.trace(exit());
         }
+    }
+
+    /// Return a string of JSON representing
+    /// the serialized user ignoring the @Expose
+    /// annotations.
+    ///
+    /// @return java.lang.String
+    private String toJsonIgnoreExpose() {
+        if (this.logger.isTraceEnabled()) {
+            this.logger.trace(entry());
+        }
+
+        final User user = new User();
+
+        user.setFirstName("Jonathan");
+        user.setLastName("Parker");
+        user.setEmailAddress("me@domain.com");
+        user.setPassword("my-secret-password");
+
+        final Gson gson = new Gson();
+        final String json = gson.toJson(user);
+
+        if (this.logger.isTraceEnabled()) {
+            this.logger.trace(exitWith(json));
+        }
+
+        return json;
+    }
+
+    /// Return a string of JSON representing
+    /// the serialized user not ignoring the
+    /// Expose annotations.
+    ///
+    /// @return java.lang.String
+    private String toJson() {
+        if (this.logger.isTraceEnabled()) {
+            this.logger.trace(entry());
+        }
+
+        final User user = new User();
+
+        user.setFirstName("Jonathan");
+        user.setLastName("Parker");
+        user.setEmailAddress("me@domain.com");
+        user.setPassword("my-secret-password");
+
+        final GsonBuilder gsonBuilder = new GsonBuilder().excludeFieldsWithoutExposeAnnotation();
+        final Gson gson = gsonBuilder.create();
+        final String json = gson.toJson(user);
+
+        if (this.logger.isTraceEnabled()) {
+            this.logger.trace(exitWith(json));
+        }
+
+        return json;
+    }
+
+    /// Return a user object from a JSON representation
+    /// of a serialized user not ignoring the Expose
+    /// annotations.
+    ///
+    /// @return net.jmp.demo.gson.classes.User
+    private User fromJson() {
+        if (this.logger.isTraceEnabled()) {
+            this.logger.trace(entry());
+        }
+
+        final String json = "{\"firstName\":\"Jonathan\",\"lastName\":\"Parker\",\"emailAddress\":\"me@domain.com\",\"password\":\"my-secret-password\"}";
+        final GsonBuilder gsonBuilder = new GsonBuilder().excludeFieldsWithoutExposeAnnotation();
+        final Gson gson = gsonBuilder.create();
+        final User user = gson.fromJson(json, User.class);
+
+        if (this.logger.isTraceEnabled()) {
+            this.logger.trace(exitWith(user));
+        }
+
+        return user;
     }
 }

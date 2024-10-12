@@ -26,6 +26,8 @@ package net.jmp.demo.gson.demos;
  * SOFTWARE.
  */
 
+import net.jmp.demo.gson.classes.User;
+
 import static net.jmp.util.testing.testutil.TestUtils.castToType;
 
 import static org.junit.Assert.*;
@@ -37,5 +39,51 @@ import org.junit.Test;
 /// @version    0.7.0
 /// @since      0.7.0
 public final class TestExposeDemo {
+    @Test
+    public void testToJsonIgnoreExpose() throws Exception {
+        final var demo = new ExposeDemo();
+        final var method = ExposeDemo.class.getDeclaredMethod("toJsonIgnoreExpose");
 
+        method.setAccessible(true);
+
+        final Object o = method.invoke(demo);
+        final String json = castToType(String.class, o);
+        final String expected = "{\"firstName\":\"Jonathan\",\"lastName\":\"Parker\",\"emailAddress\":\"me@domain.com\",\"password\":\"my-secret-password\"}";
+
+        assertNotNull(json);
+        assertEquals(expected, json);
+    }
+
+    @Test
+    public void testToJson() throws Exception {
+        final var demo = new ExposeDemo();
+        final var method = ExposeDemo.class.getDeclaredMethod("toJson");
+
+        method.setAccessible(true);
+
+        final Object o = method.invoke(demo);
+        final String json = castToType(String.class, o);
+        final String expected = "{\"firstName\":\"Jonathan\"}";
+
+        assertNotNull(json);
+        assertEquals(expected, json);
+    }
+
+    @Test
+    public void testFromJson() throws Exception {
+        final var demo = new ExposeDemo();
+        final var method = ExposeDemo.class.getDeclaredMethod("fromJson");
+
+        method.setAccessible(true);
+
+        final Object o = method.invoke(demo);
+        final User user = castToType(User.class, o);
+        final User expected = new User();
+
+        expected.setFirstName("Jonathan");
+        expected.setLastName("Parker");
+
+        assertNotNull(user);
+        assertEquals(expected, user);
+    }
 }
