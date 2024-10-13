@@ -31,6 +31,8 @@ import com.google.gson.stream.JsonToken;
 
 import java.io.IOException;
 import java.io.StringReader;
+import java.util.ArrayList;
+import java.util.List;
 
 import net.jmp.demo.gson.classes.Developer;
 
@@ -60,7 +62,8 @@ public final class StreamingDemo implements Demo {
         }
 
         if (this.logger.isInfoEnabled()) {
-            this.logger.info("developer: {}", this.fromJson());
+            this.logger.info("developer: {}", this.fromDeveloperJson());
+            this.logger.info("array: {}", this.fromArrayJson());
         }
 
         if (this.logger.isTraceEnabled()) {
@@ -71,7 +74,7 @@ public final class StreamingDemo implements Demo {
     /// Return a developer object from a string of JSON.
     ///
     /// @return net.jmp.demo.gson.classes.Developer
-    private Developer fromJson() {
+    private Developer fromDeveloperJson() {
         if (this.logger.isTraceEnabled()) {
             this.logger.trace(entry());
         }
@@ -93,6 +96,83 @@ public final class StreamingDemo implements Demo {
         return developer;
     }
 
+    /// Return an elements object from
+    /// a named array of integers in JSON.
+    ///
+    /// @return net.jmp.demo.gson.demos.StreamingDemo.Elements
+    private Elements fromArrayJson() {
+        if (this.logger.isTraceEnabled()) {
+            this.logger.trace(entry());
+        }
+
+        final Elements elements = new Elements();
+
+        final String json = "{\"name\": \"my-elements\", \"numbers\": [ 1, 2, 3, 4, 5 ]}";
+        final JsonReader reader = new JsonReader(new StringReader(json));
+
+        try {
+            String currentFieldName = null;
+
+            reader.beginObject();
+
+            while (reader.hasNext()) {
+                final JsonToken token = reader.peek();
+
+                switch (token) {
+                    case JsonToken.NAME:
+                        this.logger.debug("NAME");
+
+                        currentFieldName = reader.nextName();
+                        break;
+                    case JsonToken.STRING:
+                        this.logger.debug("STRING");
+
+                        if ("name".equals(currentFieldName)) {
+                            elements.name = reader.nextString();
+                        }
+
+                        break;
+                    case JsonToken.BEGIN_ARRAY:
+                        this.logger.debug("BEGIN_ARRAY");
+
+                        reader.beginArray();
+
+                        if ("numbers".equals(currentFieldName)) {
+                            elements.numbers = new ArrayList<>();
+                        }
+
+                        break;
+                    case JsonToken.NUMBER:
+                        this.logger.debug("NUMBER");
+
+                        if ("numbers".equals(currentFieldName)) {
+                            elements.numbers.add(reader.nextInt());
+                        }
+
+                        break;
+                    case JsonToken.END_ARRAY:
+                        this.logger.debug("END_ARRAY");
+                        reader.endArray();
+                        break;
+                    case JsonToken.END_OBJECT:
+                        this.logger.debug("END_OBJECT");
+                        reader.endObject();
+                        break;
+                    default:
+                        break;
+                }
+            }
+        } catch (final IOException ioe) {
+            this.logger.error(catching(ioe));
+        }
+
+        if (this.logger.isTraceEnabled()) {
+            this.logger.trace(exitWith(elements));
+        }
+
+        return elements;
+    }
+
     /// Stream and return the developer object.
     ///
     /// @param  reader  com.google.gson.stream.JsonReader
@@ -110,7 +190,7 @@ public final class StreamingDemo implements Demo {
             reader.beginObject();
 
             while (reader.hasNext()) {
-                JsonToken token = reader.peek();
+                final JsonToken token = reader.peek();
 
                 switch (token) {
                     case JsonToken.BEGIN_OBJECT:
@@ -161,7 +241,7 @@ public final class StreamingDemo implements Demo {
             reader.beginObject();
 
             while (reader.hasNext()) {
-                JsonToken token = reader.peek();
+                final JsonToken token = reader.peek();
 
                 switch (token) {
                     case JsonToken.NAME:
@@ -192,5 +272,30 @@ public final class StreamingDemo implements Demo {
         }
 
         return name;
+    }
+
+    /// A class of elements.
+    static final class Elements {
+        /// The name.
+        private String name;
+
+        /// The list of numbers.
+        private List<Integer> numbers;
+
+        /// The default constructor.
+        private Elements() {
+            super();
+        }
+
+        /// The to-string method.
+        ///
+        /// @return java.lang.String
+        @Override
+        public String toString() {
+            return "Elements{" +
+                    "name='" + this.name + '\'' +
+                    ", numbers=" + this.numbers +
+                    '}';
+        }
     }
 }
