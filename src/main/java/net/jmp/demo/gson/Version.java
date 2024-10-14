@@ -1,6 +1,7 @@
 package net.jmp.demo.gson;
 
 /*
+ * (#)Version.java  0.9.0   10/14/2024
  * (#)Version.java  0.8.0   10/13/2024
  * (#)Version.java  0.7.0   10/11/2024
  * (#)Version.java  0.6.0   10/10/2024
@@ -35,11 +36,11 @@ package net.jmp.demo.gson;
 
 /// The version class.
 ///
-/// @version    0.8.0
+/// @version    0.9.0
 /// @since      0.1.0
 final class Version {
     /// The version.
-    static final String VERSION_STRING = "0.8.0";
+    static final String VERSION_STRING = "0.9.0";
 
     /// The default constructor.
     private Version() {

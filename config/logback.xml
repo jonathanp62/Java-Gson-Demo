@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!--
+ (#)logback.xml 0.9.0   10/14/2024
  (#)logback.xml 0.8.0   10/13/2024
  (#)logback.xml 0.7.0   10/12/2024
  (#)logback.xml 0.6.0   10/10/2024
@@ -11,7 +12,7 @@
  (#)logback.xml 0.1.0   09/28/2024
 
  @author   Jonathan Parker
- @version  0.8.0
+ @version  0.9.0
  @since    0.1.0
 
  MIT License
@@ -69,6 +70,9 @@
         <appender-ref ref="MAIN" />
     </logger>
     <logger name="net.jmp.demo.gson.demos.StreamingDemo" additivity="false" level="info">
+        <appender-ref ref="MAIN" />
+    </logger>
+    <logger name="net.jmp.demo.gson.demos.TreeModelDemo" additivity="false" level="info">
         <appender-ref ref="MAIN" />
     </logger>
     <logger name="net.jmp.demo.gson.demos.TypeTokenDemo" additivity="false" level="info">

@@ -21,6 +21,7 @@ Logging is achieved using the SLF4J facade over Logback. The logging configurati
 * Null Serialization
 * Serializing Inner Classes
 * Streaming with JsonReader
+* Tree Model with JsonParser and JsonElement
 * TypeAdapter
 * TypeToken
 * Versioning
@@ -40,5 +41,5 @@ Gradle JavaExec Tasks
 |execute                |No arguments
 |=======================
 
-Current version: 0.8.0.
+Current version: 0.9.0.
 ~~~~~~~~~~~~~~~~~~~~~~~
