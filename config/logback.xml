@@ -68,7 +68,7 @@
     <logger name="net.jmp.demo.gson.demos.NullDemo" additivity="false" level="info">
         <appender-ref ref="MAIN" />
     </logger>
-    <logger name="net.jmp.demo.gson.demos.StreamingDemo" additivity="false" level="debug">
+    <logger name="net.jmp.demo.gson.demos.StreamingDemo" additivity="false" level="info">
         <appender-ref ref="MAIN" />
     </logger>
     <logger name="net.jmp.demo.gson.demos.TypeTokenDemo" additivity="false" level="info">

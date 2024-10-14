@@ -26,6 +26,8 @@ package net.jmp.demo.gson.demos;
  * SOFTWARE.
  */
 
+import java.util.List;
+
 import net.jmp.demo.gson.classes.Developer;
 
 import static net.jmp.util.testing.testutil.TestUtils.castToType;
@@ -39,4 +41,48 @@ import org.junit.Test;
 /// @version    0.8.0
 /// @since      0.8.0
 public final class TestStreamingDemo {
+    @Test
+    public void testDeveloper() throws Exception {
+        final var demo = new StreamingDemo();
+        final var method = StreamingDemo.class.getDeclaredMethod("fromDeveloperJson");
+
+        method.setAccessible(true);
+
+        final Object o = method.invoke(demo);
+        final Developer developer = castToType(Developer.class, o);
+
+        assertNotNull(developer);
+
+        final Developer expected = new Developer();
+        final Developer.Name name = new Developer.Name();
+
+        name.setFirstName("Jonathan");
+        name.setLastName("Parker");
+
+        expected.setName(name);
+        expected.setLanguage("Java");
+
+        assertEquals(expected, developer);
+    }
+
+    @Test
+    public void testElements() throws Exception {
+        final var demo = new StreamingDemo();
+        final var method = StreamingDemo.class.getDeclaredMethod("fromArrayJson");
+
+        method.setAccessible(true);
+
+        final Object o = method.invoke(demo);
+        final StreamingDemo.Elements elements = castToType(StreamingDemo.Elements.class, o);
+
+        assertNotNull(elements);
+
+        final StreamingDemo.Elements expected = new StreamingDemo.Elements();
+        final List<Integer> numbers = List.of(1, 2, 3, 4, 5);
+
+        expected.name = "my-elements";
+        expected.numbers = numbers;
+
+        assertEquals(expected, elements);
+    }
 }

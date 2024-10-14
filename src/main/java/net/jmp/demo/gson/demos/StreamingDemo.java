@@ -31,8 +31,10 @@ import com.google.gson.stream.JsonToken;
 
 import java.io.IOException;
 import java.io.StringReader;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import net.jmp.demo.gson.classes.Developer;
 
@@ -97,7 +99,7 @@ public final class StreamingDemo implements Demo {
         }
 
         assert developer != null;
-        
+
         if (this.logger.isTraceEnabled()) {
             this.logger.trace(exitWith(developer));
         }
@@ -204,6 +206,7 @@ public final class StreamingDemo implements Demo {
     ///
     /// @param  reader  com.google.gson.stream.JsonReader
     /// @return         net.jmp.demo.gson.classes.Developer
+    /// @throws         java.io.IOException When the JSON reader encounters an I/O error
     private Developer handleDeveloperObject(final JsonReader reader) throws IOException {
         if (this.logger.isTraceEnabled()) {
             this.logger.trace(entryWith(reader));
@@ -265,6 +268,7 @@ public final class StreamingDemo implements Demo {
     ///
     /// @param  reader  com.google.gson.stream.JsonReader
     /// @return         net.jmp.demo.gson.classes.Developer.Name
+    /// @throws         java.io.IOException When the JSON reader encounters an I/O error
     private Developer.Name handleDeveloperNameObject(final JsonReader reader) throws IOException {
         if (this.logger.isTraceEnabled()) {
             this.logger.trace(entryWith(reader));
@@ -319,16 +323,39 @@ public final class StreamingDemo implements Demo {
     }
 
     /// A class of elements.
-    static final class Elements {
+    public static final class Elements {
         /// The name.
-        private String name;
+        public String name;
 
         /// The list of numbers.
-        private List<Integer> numbers;
+        public List<Integer> numbers;
 
         /// The default constructor.
-        private Elements() {
+        public Elements() {
             super();
+        }
+
+        /// The equals method.
+        ///
+        /// @param  o   java.lang.Object
+        /// @return     boolean
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+
+            if (o == null || getClass() != o.getClass()) return false;
+
+            final Elements elements = (Elements) o;
+
+            return Objects.equals(this.name, elements.name) && Objects.equals(this.numbers, elements.numbers);
+        }
+
+        /// The hash-code method.
+        ///
+        /// @return int
+        @Override
+        public int hashCode() {
+            return Objects.hash(this.name, this.numbers);
         }
 
         /// The to-string method.
