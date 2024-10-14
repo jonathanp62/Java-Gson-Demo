@@ -81,14 +81,23 @@ public final class StreamingDemo implements Demo {
 
         final String json = "{\"name\":{\"first-name\":\"Jonathan\",\"last-name\":\"Parker\"},\"language\":\"Java\"}";
         final JsonReader reader = new JsonReader(new StringReader(json));
-        final Developer developer = this.handleDeveloperObject(reader);
+
+        Developer developer = null;
 
         try {
-            reader.close();
+            developer = this.handleDeveloperObject(reader);
         } catch (final IOException ioe) {
             this.logger.error(catching(ioe));
+        } finally {
+            try {
+                reader.close();
+            } catch (final IOException ioe) {
+                this.logger.error(catching(ioe));
+            }
         }
 
+        assert developer != null;
+        
         if (this.logger.isTraceEnabled()) {
             this.logger.trace(exitWith(developer));
         }
@@ -176,6 +185,12 @@ public final class StreamingDemo implements Demo {
             }
         } catch (final IOException ioe) {
             this.logger.error(catching(ioe));
+        } finally {
+            try {
+                reader.close();
+            } catch (final IOException ioe) {
+                this.logger.error(catching(ioe));
+            }
         }
 
         if (this.logger.isTraceEnabled()) {
@@ -189,56 +204,54 @@ public final class StreamingDemo implements Demo {
     ///
     /// @param  reader  com.google.gson.stream.JsonReader
     /// @return         net.jmp.demo.gson.classes.Developer
-    private Developer handleDeveloperObject(final JsonReader reader) {
+    private Developer handleDeveloperObject(final JsonReader reader) throws IOException {
         if (this.logger.isTraceEnabled()) {
             this.logger.trace(entryWith(reader));
         }
 
         final Developer developer = new Developer();
 
-        try {
-            String currentFieldName = null;
+        String currentFieldName = null;
 
-            reader.beginObject();
+        // Consumes the next token from the stream asserting that it is the beginning of a new object
 
-            while (reader.peek() != JsonToken.END_DOCUMENT) {
-                final JsonToken token = reader.peek();
+        reader.beginObject();
 
-                switch (token) {
-                    case JsonToken.BEGIN_OBJECT:
-                        this.logger.debug("BEGIN_OBJECT");
+        while (reader.peek() != JsonToken.END_DOCUMENT) {
+            final JsonToken token = reader.peek();
 
-                        if ("name".equals(currentFieldName)) {
-                            developer.setName(this.handleDeveloperNameObject(reader));
-                        }
+            switch (token) {
+                case JsonToken.BEGIN_OBJECT:
+                    this.logger.debug("BEGIN_OBJECT");
 
-                        break;
-                    case JsonToken.NAME:
-                        this.logger.debug("NAME");
+                    if ("name".equals(currentFieldName)) {
+                        developer.setName(this.handleDeveloperNameObject(reader));
+                    }
 
-                        currentFieldName = reader.nextName();
+                    break;
+                case JsonToken.NAME:
+                    this.logger.debug("NAME");
 
-                        break;
-                    case JsonToken.STRING:
-                        this.logger.debug("STRING");
+                    currentFieldName = reader.nextName();
 
-                        if ("language".equals(currentFieldName)) {
-                            developer.setLanguage(reader.nextString());
-                        }
+                    break;
+                case JsonToken.STRING:
+                    this.logger.debug("STRING");
 
-                        break;
-                    case JsonToken.END_OBJECT:
-                        this.logger.debug("END_OBJECT");
-                        reader.endObject();
-                        break;
-                    default:
-                        this.logger.debug("DEFAULT");
-                        reader.skipValue();
-                        break;
-                }
+                    if ("language".equals(currentFieldName)) {
+                        developer.setLanguage(reader.nextString());
+                    }
+
+                    break;
+                case JsonToken.END_OBJECT:
+                    this.logger.debug("END_OBJECT");
+                    reader.endObject();
+                    break;
+                default:
+                    this.logger.debug("DEFAULT");
+                    reader.skipValue();
+                    break;
             }
-        } catch (final IOException ioe) {
-            this.logger.error(catching(ioe));
         }
 
         if (this.logger.isTraceEnabled()) {
@@ -252,51 +265,51 @@ public final class StreamingDemo implements Demo {
     ///
     /// @param  reader  com.google.gson.stream.JsonReader
     /// @return         net.jmp.demo.gson.classes.Developer.Name
-    private Developer.Name handleDeveloperNameObject(final JsonReader reader) {
+    private Developer.Name handleDeveloperNameObject(final JsonReader reader) throws IOException {
         if (this.logger.isTraceEnabled()) {
             this.logger.trace(entryWith(reader));
         }
 
         final Developer.Name name = new Developer.Name();
 
-        try {
-            String currentFieldName = null;
+        String currentFieldName = null;
 
-            reader.beginObject();
+        // Consumes the next token from the stream asserting that it is the beginning of a new object
 
-            while (reader.hasNext()) {
-                final JsonToken token = reader.peek();
+        reader.beginObject();
 
-                switch (token) {
-                    case JsonToken.NAME:
-                        this.logger.debug("NAME");
+        while (reader.hasNext()) {
+            final JsonToken token = reader.peek();
 
-                        currentFieldName = reader.nextName();
+            switch (token) {
+                case JsonToken.NAME:
+                    this.logger.debug("NAME");
 
-                        break;
-                    case JsonToken.STRING:
-                        this.logger.debug("STRING");
+                    currentFieldName = reader.nextName();
 
-                        if ("first-name".equals(currentFieldName)) {
-                            name.setFirstName(reader.nextString());
-                        }
+                    break;
+                case JsonToken.STRING:
+                    this.logger.debug("STRING");
 
-                        if ("last-name".equals(currentFieldName)) {
-                            name.setLastName(reader.nextString());
-                        }
+                    if ("first-name".equals(currentFieldName)) {
+                        name.setFirstName(reader.nextString());
+                    }
 
-                        break;
-                    default:
-                        this.logger.debug("DEFAULT");
-                        reader.skipValue();
-                        break;
-                }
+                    if ("last-name".equals(currentFieldName)) {
+                        name.setLastName(reader.nextString());
+                    }
+
+                    break;
+                default:
+                    this.logger.debug("DEFAULT");
+                    reader.skipValue();
+                    break;
             }
-
-            reader.endObject();
-        } catch (final IOException ioe) {
-            this.logger.error(catching(ioe));
         }
+
+        // Consumes the next token from the stream asserting that it is the end of an object
+
+        reader.endObject();
 
         if (this.logger.isTraceEnabled()) {
             this.logger.trace(exitWith(name));
