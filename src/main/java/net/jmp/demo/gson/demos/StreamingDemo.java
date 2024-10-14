@@ -107,15 +107,24 @@ public final class StreamingDemo implements Demo {
 
         final Elements elements = new Elements();
 
-        final String json = "{\"name\": \"my-elements\", \"numbers\": [ 1, 2, 3, 4, 5 ]}";
+        final String json = "{\"numbers\": [ 1, 2, 3, 4, 5 ], \"name\": \"my-elements\"}";
         final JsonReader reader = new JsonReader(new StringReader(json));
 
         try {
             String currentFieldName = null;
 
+            // Consumes the next token from the stream asserting that it is the beginning of a new object
+
             reader.beginObject();
 
-            while (reader.hasNext()) {
+            /*
+             * Method read.hasNext() is not used here as it ends after
+             * processing an array:
+             *
+             * Returns true if the current array or object has another element.
+             */
+
+            while (reader.peek() != JsonToken.END_DOCUMENT) {
                 final JsonToken token = reader.peek();
 
                 switch (token) {
@@ -123,6 +132,7 @@ public final class StreamingDemo implements Demo {
                         this.logger.debug("NAME");
 
                         currentFieldName = reader.nextName();
+
                         break;
                     case JsonToken.STRING:
                         this.logger.debug("STRING");
@@ -159,6 +169,8 @@ public final class StreamingDemo implements Demo {
                         reader.endObject();
                         break;
                     default:
+                        this.logger.debug("DEFAULT");
+                        reader.skipValue();
                         break;
                 }
             }
@@ -189,30 +201,42 @@ public final class StreamingDemo implements Demo {
 
             reader.beginObject();
 
-            while (reader.hasNext()) {
+            while (reader.peek() != JsonToken.END_DOCUMENT) {
                 final JsonToken token = reader.peek();
 
                 switch (token) {
                     case JsonToken.BEGIN_OBJECT:
+                        this.logger.debug("BEGIN_OBJECT");
+
                         if ("name".equals(currentFieldName)) {
                             developer.setName(this.handleDeveloperNameObject(reader));
                         }
 
                         break;
                     case JsonToken.NAME:
+                        this.logger.debug("NAME");
+
                         currentFieldName = reader.nextName();
+
                         break;
                     case JsonToken.STRING:
+                        this.logger.debug("STRING");
+
                         if ("language".equals(currentFieldName)) {
                             developer.setLanguage(reader.nextString());
                         }
+
+                        break;
+                    case JsonToken.END_OBJECT:
+                        this.logger.debug("END_OBJECT");
+                        reader.endObject();
                         break;
                     default:
+                        this.logger.debug("DEFAULT");
+                        reader.skipValue();
                         break;
                 }
             }
-
-            reader.endObject();
         } catch (final IOException ioe) {
             this.logger.error(catching(ioe));
         }
@@ -245,9 +269,14 @@ public final class StreamingDemo implements Demo {
 
                 switch (token) {
                     case JsonToken.NAME:
+                        this.logger.debug("NAME");
+
                         currentFieldName = reader.nextName();
+
                         break;
                     case JsonToken.STRING:
+                        this.logger.debug("STRING");
+
                         if ("first-name".equals(currentFieldName)) {
                             name.setFirstName(reader.nextString());
                         }
@@ -258,6 +287,8 @@ public final class StreamingDemo implements Demo {
 
                         break;
                     default:
+                        this.logger.debug("DEFAULT");
+                        reader.skipValue();
                         break;
                 }
             }
