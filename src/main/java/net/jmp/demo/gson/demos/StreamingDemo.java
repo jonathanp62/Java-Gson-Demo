@@ -36,6 +36,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import net.jmp.demo.gson.annotations.Version;
+
 import net.jmp.demo.gson.classes.Developer;
 
 import static net.jmp.util.logging.LoggerUtils.*;
@@ -47,6 +49,7 @@ import org.slf4j.LoggerFactory;
 ///
 /// @version    0.8.0
 /// @since      0.8.0
+@Version(0.8)
 public final class StreamingDemo implements Demo {
     /// The logger.
     private final Logger logger = LoggerFactory.getLogger(this.getClass().getName());

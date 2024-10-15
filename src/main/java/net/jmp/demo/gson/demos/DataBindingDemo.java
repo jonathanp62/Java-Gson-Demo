@@ -28,6 +28,8 @@ package net.jmp.demo.gson.demos;
 
 import com.google.gson.Gson;
 
+import net.jmp.demo.gson.annotations.Version;
+
 import static net.jmp.util.logging.LoggerUtils.*;
 
 import org.slf4j.Logger;
@@ -37,6 +39,7 @@ import org.slf4j.LoggerFactory;
 ///
 /// @version    0.9.0
 /// @since      0.9.0
+@Version(0.9)
 public final class DataBindingDemo implements Demo {
     /// The logger.
     private final Logger logger = LoggerFactory.getLogger(this.getClass().getName());

@@ -1,16 +1,7 @@
-package net.jmp.demo.gson;
+package net.jmp.demo.gson.annotations;
 
 /*
  * (#)Version.java  0.10.0  10/15/2024
- * (#)Version.java  0.9.0   10/14/2024
- * (#)Version.java  0.8.0   10/13/2024
- * (#)Version.java  0.7.0   10/11/2024
- * (#)Version.java  0.6.0   10/10/2024
- * (#)Version.java  0.5.0   10/06/2024
- * (#)Version.java  0.4.0   10/05/2024
- * (#)Version.java  0.3.0   09/30/2024
- * (#)Version.java  0.2.0   09/28/2024
- * (#)Version.java  0.1.0   09/28/2024
  *
  * MIT License
  *
@@ -35,16 +26,17 @@ package net.jmp.demo.gson;
  * SOFTWARE.
  */
 
-/// The version class.
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+
+/// The version annotation.
 ///
 /// @version    0.10.0
-/// @since      0.1.0
-final class Version {
-    /// The version.
-    static final String VERSION_STRING = "0.10.0";
-
-    /// The default constructor.
-    private Version() {
-        super();
-    }
+/// @since      0.10.0
+@Retention(value = RetentionPolicy.RUNTIME)
+@Target(value = { ElementType.FIELD, ElementType.TYPE })
+public @interface Version {
+    double value();
 }

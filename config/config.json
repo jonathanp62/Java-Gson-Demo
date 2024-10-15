@@ -1,0 +1,14 @@
+{
+  "version": 0.9,
+  "demos": [
+    "AdaptersDemo",
+    "NullDemo",
+    "VersioningDemo",
+    "TypeTokenDemo",
+    "InnerClassDemo",
+    "ExposeDemo",
+    "StreamingDemo",
+    "TreeModelDemo",
+    "DataBindingDemo"
+  ]
+}

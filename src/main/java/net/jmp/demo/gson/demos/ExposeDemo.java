@@ -29,6 +29,8 @@ package net.jmp.demo.gson.demos;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import net.jmp.demo.gson.annotations.Version;
+
 import net.jmp.demo.gson.classes.User;
 
 import static net.jmp.util.logging.LoggerUtils.*;
@@ -40,6 +42,7 @@ import org.slf4j.LoggerFactory;
 ///
 /// @version    0.7.0
 /// @since      0.7.0
+@Version(0.7)
 public final class ExposeDemo implements Demo {
     /// The logger.
     private final Logger logger = LoggerFactory.getLogger(this.getClass().getName());

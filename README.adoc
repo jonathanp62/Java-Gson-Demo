@@ -3,10 +3,15 @@ Gson Demo
 
 A program that demonstrates using Gson in a variety of ways, but mostly focused on writing adapters.
 
+Configuration
+~~~~~~~~~~~~~
+
+Application configuration is supplied in *config/config.json* via the java system property *-Dapp.configurationFile=config/config.json*.
+
 Logging
 ~~~~~~~
 
-Logging is achieved using the SLF4J facade over Logback. The logging configuration is supplied in *config/logback.xml*. It can be overriden with a java system property, i.e. *-Dlogback.configurationFile=config/logback.xml*
+Logging is achieved using the SLF4J facade over Logback. The logging configuration is supplied in *config/logback.xml*. It can be overridden with a java system property, i.e. *-Dlogback.configurationFile=config/logback.xml*.
 
 == Demonstrated Concepts
 
@@ -42,5 +47,5 @@ Gradle JavaExec Tasks
 |execute                |No arguments
 |=======================
 
-Current version: 0.9.0.
-~~~~~~~~~~~~~~~~~~~~~~~
+Current version: 0.10.0.
+~~~~~~~~~~~~~~~~~~~~~~~~

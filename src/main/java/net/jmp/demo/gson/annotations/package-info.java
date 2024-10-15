@@ -1,16 +1,5 @@
-package net.jmp.demo.gson;
-
 /*
- * (#)Version.java  0.10.0  10/15/2024
- * (#)Version.java  0.9.0   10/14/2024
- * (#)Version.java  0.8.0   10/13/2024
- * (#)Version.java  0.7.0   10/11/2024
- * (#)Version.java  0.6.0   10/10/2024
- * (#)Version.java  0.5.0   10/06/2024
- * (#)Version.java  0.4.0   10/05/2024
- * (#)Version.java  0.3.0   09/30/2024
- * (#)Version.java  0.2.0   09/28/2024
- * (#)Version.java  0.1.0   09/28/2024
+ * (#)package-info.java 0.10.0  10/15/2024
  *
  * MIT License
  *
@@ -35,16 +24,8 @@ package net.jmp.demo.gson;
  * SOFTWARE.
  */
 
-/// The version class.
+/// The package that contains annotations.
 ///
 /// @version    0.10.0
-/// @since      0.1.0
-final class Version {
-    /// The version.
-    static final String VERSION_STRING = "0.10.0";
-
-    /// The default constructor.
-    private Version() {
-        super();
-    }
-}
+/// @since      0.10.0
+package net.jmp.demo.gson.annotations;
