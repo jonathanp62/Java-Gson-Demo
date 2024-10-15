@@ -73,7 +73,8 @@ public final class DataBindingDemo implements Demo {
 
     /// Return a string from JSON.
     ///
-    /// @return java.lang.String
+    /// @param  gson    com.google.gson.Gson
+    /// @return         java.lang.String
     private String toString(final Gson gson) {
         if (this.logger.isTraceEnabled()) {
             this.logger.trace(entryWith(gson));
@@ -90,7 +91,8 @@ public final class DataBindingDemo implements Demo {
 
     /// Return JSON from a string.
     ///
-    /// @return java.lang.String
+    /// @param  gson    com.google.gson.Gson
+    /// @return         java.lang.String
     private String fromString(final Gson gson) {
         if (this.logger.isTraceEnabled()) {
             this.logger.trace(entryWith(gson));
@@ -107,7 +109,8 @@ public final class DataBindingDemo implements Demo {
 
     /// Return a long from JSON.
     ///
-    /// @return java.lang.Long
+    /// @param  gson    com.google.gson.Gson
+    /// @return         java.lang.Long
     private Long toLong(final Gson gson) {
         if (this.logger.isTraceEnabled()) {
             this.logger.trace(entryWith(gson));
@@ -124,7 +127,8 @@ public final class DataBindingDemo implements Demo {
 
     /// Return JSON from a long.
     ///
-    /// @return java.lang.String
+    /// @param  gson    com.google.gson.Gson
+    /// @return         java.lang.String
     private String fromLong(final Gson gson) {
         if (this.logger.isTraceEnabled()) {
             this.logger.trace(entryWith(gson));
@@ -141,7 +145,8 @@ public final class DataBindingDemo implements Demo {
 
     /// Return a boolean from JSON.
     ///
-    /// @return java.lang.Boolean
+    /// @param  gson    com.google.gson.Gson
+    /// @return         java.lang.Boolean
     private Boolean toBoolean(final Gson gson) {
         if (this.logger.isTraceEnabled()) {
             this.logger.trace(entryWith(gson));
@@ -158,7 +163,8 @@ public final class DataBindingDemo implements Demo {
 
     /// Return JSON from a boolean.
     ///
-    /// @return java.lang.String
+    /// @param  gson    com.google.gson.Gson
+    /// @return         java.lang.String
     private String fromBoolean(final Gson gson) {
         if (this.logger.isTraceEnabled()) {
             this.logger.trace(entryWith(gson));
@@ -175,7 +181,8 @@ public final class DataBindingDemo implements Demo {
 
     /// Return an array of integers from JSON.
     ///
-    /// @return int[]
+    /// @param  gson    com.google.gson.Gson
+    /// @return         int[]
     private int[] toIntegerArray(final Gson gson) {
         if (this.logger.isTraceEnabled()) {
             this.logger.trace(entryWith(gson));
@@ -192,7 +199,8 @@ public final class DataBindingDemo implements Demo {
 
     /// Return JSON from an array of integers.
     ///
-    /// @return java.lang.String
+    /// @param  gson    com.google.gson.Gson
+    /// @return         java.lang.String
     private String fromIntegerArray(final Gson gson) {
         if (this.logger.isTraceEnabled()) {
             this.logger.trace(entryWith(gson));
