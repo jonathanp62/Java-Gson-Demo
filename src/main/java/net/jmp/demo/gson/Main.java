@@ -165,7 +165,7 @@ final class Main implements Runnable {
 
         final String packageName = config.getPackageName();
 
-        config.getDemos().forEach(demo -> {
+        config.getDemosAsStream().forEach(demo -> {
             try {
                 final Class<?> clazz = Class.forName(packageName + "." + demo);
                 final Demo instance = (Demo) clazz.getDeclaredConstructor().newInstance();
@@ -175,10 +175,16 @@ final class Main implements Runnable {
                     final var version = clazz.getAnnotation(net.jmp.demo.gson.annotations.Version.class);
                     final var versionValue = version.value();
 
-                    this.logger.debug("Class {} annotated with @Version({})", clazz.getSimpleName(), versionValue);
-                }
+                    if (this.logger.isDebugEnabled()) {
+                        this.logger.debug("Class {} annotated with @Version({})", clazz.getSimpleName(), versionValue);
+                    }
 
-                method.invoke(instance);
+                    if (config.getVersion() >= versionValue) {
+                        method.invoke(instance);
+                    }
+                } else {
+                    method.invoke(instance);
+                }
             } catch (final ClassNotFoundException | InstantiationException | IllegalAccessException |
                            NoSuchMethodException | InvocationTargetException e) {
                 this.logger.error(catching(e));

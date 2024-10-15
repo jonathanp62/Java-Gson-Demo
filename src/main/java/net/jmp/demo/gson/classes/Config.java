@@ -31,6 +31,8 @@ import com.google.gson.annotations.SerializedName;
 import java.util.List;
 import java.util.Objects;
 
+import java.util.stream.Stream;
+
 /// The configuration class as represented by config.json.
 ///
 /// @version    0.10.0
@@ -81,9 +83,16 @@ public class Config {
 
     /// Return the list of demo classes.
     ///
-    /// @return java.util.List<net.jmp.demo.gson.classes.Config>
+    /// @return java.util.List<java.lang.String>
     public List<String> getDemos() {
         return this.demos;
+    }
+
+    /// Return a stream of demo classes.
+    ///
+    /// @return java.util.stream.Stream<java.lang.String>
+    public Stream<String> getDemosAsStream() {
+        return this.getDemos().stream();
     }
 
     /// Set the list of demo classes.
