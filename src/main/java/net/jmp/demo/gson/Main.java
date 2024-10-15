@@ -1,6 +1,7 @@
 package net.jmp.demo.gson;
 
 /*
+ * (#)Main.java 0.9.0   10/15/2024
  * (#)Main.java 0.8.0   10/13/2024
  * (#)Main.java 0.7.0   10/12/2024
  * (#)Main.java 0.6.0   10/10/2024
@@ -47,7 +48,7 @@ import org.slf4j.LoggerFactory;
 
 /// The main class.
 ///
-/// @version    0.8.0
+/// @version    0.9.0
 /// @since      0.1.0
 final class Main implements Runnable {
     /// The logger.
@@ -124,7 +125,8 @@ final class Main implements Runnable {
                 new TypeTokenDemo(),
                 new InnerClassDemo(),
                 new ExposeDemo(),
-                new StreamingDemo()
+                new StreamingDemo(),
+                new TreeModelDemo()
         ).forEach(Demo::demo);
 
         if (this.logger.isTraceEnabled()) {
