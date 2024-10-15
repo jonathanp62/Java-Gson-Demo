@@ -171,6 +171,13 @@ final class Main implements Runnable {
                 final Demo instance = (Demo) clazz.getDeclaredConstructor().newInstance();
                 final Method method = clazz.getDeclaredMethod("demo");
 
+                if (clazz.isAnnotationPresent(net.jmp.demo.gson.annotations.Version.class)) {
+                    final var version = clazz.getAnnotation(net.jmp.demo.gson.annotations.Version.class);
+                    final var versionValue = version.value();
+
+                    this.logger.debug("Class {} annotated with @Version({})", clazz.getSimpleName(), versionValue);
+                }
+
                 method.invoke(instance);
             } catch (final ClassNotFoundException | InstantiationException | IllegalAccessException |
                            NoSuchMethodException | InvocationTargetException e) {
