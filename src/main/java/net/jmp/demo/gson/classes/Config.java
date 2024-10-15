@@ -97,7 +97,7 @@ public class Config {
 
     /// Set the list of demo classes.
     ///
-    /// @param  demos   java.util.List<net.jmp.demo.gson.classes.Config>
+    /// @param  demos   java.util.List<java.lang.String>
     public void setDemos(final List<String> demos) {
         this.demos = demos;
     }
