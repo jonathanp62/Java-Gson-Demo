@@ -126,7 +126,8 @@ final class Main implements Runnable {
                 new InnerClassDemo(),
                 new ExposeDemo(),
                 new StreamingDemo(),
-                new TreeModelDemo()
+                new TreeModelDemo(),
+                new DataBindingDemo()
         ).forEach(Demo::demo);
 
         if (this.logger.isTraceEnabled()) {
