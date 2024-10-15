@@ -1,5 +1,6 @@
 {
   "version": 0.9,
+  "package": "net.jmp.demo.gson.demos",
   "demos": [
     "AdaptersDemo",
     "NullDemo",

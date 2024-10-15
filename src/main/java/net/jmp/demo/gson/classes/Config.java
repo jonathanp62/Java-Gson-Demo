@@ -26,6 +26,8 @@ package net.jmp.demo.gson.classes;
  * SOFTWARE.
  */
 
+import com.google.gson.annotations.SerializedName;
+
 import java.util.List;
 import java.util.Objects;
 
@@ -36,6 +38,10 @@ import java.util.Objects;
 public class Config {
     /// The highest versioned demo class to run.
     private double version;
+
+    /// The package containing the demo classes.
+    @SerializedName("package")
+    private String packageName;
 
     /// The list of demo classes.
     private List<String> demos;
@@ -57,6 +63,20 @@ public class Config {
     /// @param  version double
     public void setVersion(final double version) {
         this.version = version;
+    }
+
+    /// Return the name of the package containing the demo classes.
+    ///
+    /// @return java.lang.String
+    public String getPackageName() {
+        return this.packageName;
+    }
+
+    /// Set the name of the package containing the demo classes.
+    ///
+    /// @param  packageName java.lang.String
+    public void setPackageName(final String packageName) {
+        this.packageName = packageName;
     }
 
     /// Return the list of demo classes.
@@ -84,7 +104,9 @@ public class Config {
 
         final Config config = (Config) o;
 
-        return Double.compare(this.version, config.version) == 0 && Objects.equals(this.demos, config.demos);
+        return Double.compare(this.version, config.version) == 0 &&
+                Objects.equals(this.packageName, config.packageName) &&
+                Objects.equals(this.demos, config.demos);
     }
 
     /// The hash-code method.
@@ -92,7 +114,7 @@ public class Config {
     /// @return int
     @Override
     public int hashCode() {
-        return Objects.hash(this.version, this.demos);
+        return Objects.hash(this.version, this.packageName, this.demos);
     }
 
     /// The to-string method.
@@ -102,6 +124,7 @@ public class Config {
     public String toString() {
         return "Config{" +
                 "version=" + this.version +
+                "packageName='" + this.packageName + "'" +
                 ", demos=" + this.demos +
                 '}';
     }

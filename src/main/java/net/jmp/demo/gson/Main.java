@@ -1,6 +1,7 @@
 package net.jmp.demo.gson;
 
 /*
+ * (#)Main.java 0.10.0  10/15/2024
  * (#)Main.java 0.9.0   10/15/2024
  * (#)Main.java 0.8.0   10/13/2024
  * (#)Main.java 0.7.0   10/12/2024
@@ -34,10 +35,20 @@ package net.jmp.demo.gson;
  * SOFTWARE.
  */
 
+import com.google.gson.Gson;
+
+import com.google.gson.stream.JsonReader;
+
+import java.io.FileReader;
+import java.io.IOException;
+
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+
 import java.util.Arrays;
 import java.util.Objects;
 
-import java.util.stream.Stream;
+import net.jmp.demo.gson.classes.Config;
 
 import net.jmp.demo.gson.demos.*;
 
@@ -48,7 +59,7 @@ import org.slf4j.LoggerFactory;
 
 /// The main class.
 ///
-/// @version    0.9.0
+/// @version    0.10.0
 /// @since      0.1.0
 final class Main implements Runnable {
     /// The logger.
@@ -76,7 +87,14 @@ final class Main implements Runnable {
         }
 
         this.greeting();
-        this.runDemos();
+
+        try {
+            final var config = this.loadConfiguration();
+
+            this.runDemos(config);
+        } catch (final Exception e) {
+            this.logger.error(catching(e));
+        }
 
         if (this.logger.isTraceEnabled()) {
             this.logger.trace(exit());
@@ -112,23 +130,53 @@ final class Main implements Runnable {
         }
     }
 
-    /// Run the demonstration classes.
-    private void runDemos() {
+    /// Load the application configuration
+    ///
+    /// @return net.jmp.demo.gson.classes.Config
+    /// @throws java.io.IOException When an I/O error occurs reading the configuration file
+    private Config loadConfiguration() throws IOException {
         if (this.logger.isTraceEnabled()) {
             this.logger.trace(entry());
         }
 
-        Stream.of(
-            new AdaptersDemo(),
-                new NullDemo(),
-                new VersioningDemo(),
-                new TypeTokenDemo(),
-                new InnerClassDemo(),
-                new ExposeDemo(),
-                new StreamingDemo(),
-                new TreeModelDemo(),
-                new DataBindingDemo()
-        ).forEach(Demo::demo);
+        Config config = null;
+
+        final String appConfigFileName = System.getProperty("app.config", "config/config.json");
+        final Gson gson = new Gson();
+
+        try (final JsonReader reader = new JsonReader(new FileReader(appConfigFileName))) {
+            config = gson.fromJson(reader, Config.class);
+        }
+
+        if (this.logger.isTraceEnabled()) {
+            this.logger.trace(exitWith(config));
+        }
+
+        return config;
+    }
+
+    /// Run the demonstration classes.
+    ///
+    /// @param  config  net.jmp.demo.gson.classes.Config
+    private void runDemos(final Config config) {
+        if (this.logger.isTraceEnabled()) {
+            this.logger.trace(entryWith(config));
+        }
+
+        final String packageName = config.getPackageName();
+
+        config.getDemos().forEach(demo -> {
+            try {
+                final Class<?> clazz = Class.forName(packageName + "." + demo);
+                final Demo instance = (Demo) clazz.getDeclaredConstructor().newInstance();
+                final Method method = clazz.getDeclaredMethod("demo");
+
+                method.invoke(instance);
+            } catch (final ClassNotFoundException | InstantiationException | IllegalAccessException |
+                           NoSuchMethodException | InvocationTargetException e) {
+                this.logger.error(catching(e));
+            }
+        });
 
         if (this.logger.isTraceEnabled()) {
             this.logger.trace(exit());

@@ -38,5 +38,8 @@ import java.lang.annotation.Target;
 @Retention(value = RetentionPolicy.RUNTIME)
 @Target(value = { ElementType.FIELD, ElementType.TYPE })
 public @interface Version {
+    /// The version.
+    ///
+    /// @return double
     double value();
 }
