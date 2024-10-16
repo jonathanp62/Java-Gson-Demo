@@ -199,4 +199,23 @@ final class Main implements Runnable {
             this.logger.trace(exit());
         }
     }
+
+    /// Get the version of the specified class
+    /// if that class is annotated with Version.
+    ///
+    /// @param  className   java.lang.String
+    /// @return             double
+    private double getClassVersion(final String className) {
+        if (this.logger.isTraceEnabled()) {
+            this.logger.trace(entryWith(className));
+        }
+
+        double version = 0;
+
+        if (this.logger.isTraceEnabled()) {
+            this.logger.trace(exitWith(version));
+        }
+
+        return version;
+    }
 }
