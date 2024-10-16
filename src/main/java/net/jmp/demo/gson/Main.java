@@ -48,6 +48,8 @@ import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.Objects;
 
+import java.util.function.Consumer;
+
 import net.jmp.demo.gson.classes.Config;
 
 import net.jmp.demo.gson.demos.*;
@@ -163,11 +165,9 @@ final class Main implements Runnable {
             this.logger.trace(entryWith(config));
         }
 
-        final String packageName = config.getPackageName();
-
-        config.getDemosAsStream().forEach(demo -> {
+        final Consumer<String> demoRunner = className -> {
             try {
-                final Class<?> clazz = Class.forName(packageName + "." + demo);
+                final Class<?> clazz = Class.forName(className);
                 final Demo instance = (Demo) clazz.getDeclaredConstructor().newInstance();
                 final Method method = clazz.getDeclaredMethod("demo");
 
@@ -189,7 +189,11 @@ final class Main implements Runnable {
                            NoSuchMethodException | InvocationTargetException e) {
                 this.logger.error(catching(e));
             }
-        });
+        };
+
+        config.getDemosAsStream()
+                .map(demo -> config.getPackageName() + "." + demo)
+                .forEach(demoRunner);
 
         if (this.logger.isTraceEnabled()) {
             this.logger.trace(exit());
