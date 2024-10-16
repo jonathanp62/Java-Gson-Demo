@@ -166,22 +166,14 @@ final class Main implements Runnable {
         }
 
         final Consumer<String> demoRunner = className -> {
-            try {
-                final Class<?> clazz = Class.forName(className);
-                final Demo instance = (Demo) clazz.getDeclaredConstructor().newInstance();
-                final Method method = clazz.getDeclaredMethod("demo");
-                final double version = this.getClassVersion(className);
+            final double version = this.getClassVersion(className);
 
-                if (version > 0) {
-                    if (config.getVersion() >= version) {
-                        method.invoke(instance);
-                    }
-                } else {
-                    method.invoke(instance);
+            if (version > 0) {
+                if (config.getVersion() >= version) {
+                    final var _ = this.runClassMethod(className, "demo", Void.class);
                 }
-            } catch (final ClassNotFoundException | InstantiationException | IllegalAccessException |
-                           NoSuchMethodException | InvocationTargetException e) {
-                this.logger.error(catching(e));
+            } else {
+                final var _ = this.runClassMethod(className, "demo", Void.class);
             }
         };
 
@@ -229,5 +221,41 @@ final class Main implements Runnable {
         }
 
         return version;
+    }
+
+    /// Run the specified method in the specified class.
+    ///
+    /// @param  <T>         The type of return value
+    /// @param  className   java.lang.String
+    /// @param  methodName  java.lang.String
+    /// @return             T
+    @SuppressWarnings("unchecked")
+    private <T> T runClassMethod(final String className, final String methodName, final Class<T> returnType) {
+        if (this.logger.isTraceEnabled()) {
+            this.logger.trace(entryWith(className, methodName, returnType));
+        }
+
+        T result = null;
+
+        try {
+            final Class<?> clazz = Class.forName(className);
+            final Demo instance = (Demo) clazz.getDeclaredConstructor().newInstance();
+            final Method method = clazz.getDeclaredMethod("demo");
+
+            if (!returnType.equals(Void.class)) {
+                result = (T) method.invoke(instance);
+            } else {
+                method.invoke(instance);
+            }
+        } catch (final ClassNotFoundException | InstantiationException | IllegalAccessException |
+                       NoSuchMethodException | InvocationTargetException e) {
+            this.logger.error(catching(e));
+        }
+
+        if (this.logger.isTraceEnabled()) {
+            this.logger.trace(exitWith(result));
+        }
+
+        return result;
     }
 }
