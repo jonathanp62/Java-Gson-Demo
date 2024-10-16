@@ -170,16 +170,10 @@ final class Main implements Runnable {
                 final Class<?> clazz = Class.forName(className);
                 final Demo instance = (Demo) clazz.getDeclaredConstructor().newInstance();
                 final Method method = clazz.getDeclaredMethod("demo");
+                final double version = this.getClassVersion(className);
 
-                if (clazz.isAnnotationPresent(net.jmp.demo.gson.annotations.Version.class)) {
-                    final var version = clazz.getAnnotation(net.jmp.demo.gson.annotations.Version.class);
-                    final var versionValue = version.value();
-
-                    if (this.logger.isDebugEnabled()) {
-                        this.logger.debug("Class {} annotated with @Version({})", clazz.getSimpleName(), versionValue);
-                    }
-
-                    if (config.getVersion() >= versionValue) {
+                if (version > 0) {
+                    if (config.getVersion() >= version) {
                         method.invoke(instance);
                     }
                 } else {
@@ -202,6 +196,8 @@ final class Main implements Runnable {
 
     /// Get the version of the specified class
     /// if that class is annotated with Version.
+    /// If no annotation is found for the class,
+    /// return 0.
     ///
     /// @param  className   java.lang.String
     /// @return             double
@@ -211,6 +207,22 @@ final class Main implements Runnable {
         }
 
         double version = 0;
+
+        try {
+            final Class<?> clazz = Class.forName(className);
+
+            if (clazz.isAnnotationPresent(net.jmp.demo.gson.annotations.Version.class)) {
+                final var versionAnnotation = clazz.getAnnotation(net.jmp.demo.gson.annotations.Version.class);
+
+                version = versionAnnotation.value();
+
+                if (this.logger.isDebugEnabled()) {
+                    this.logger.debug("Class {} annotated with @Version({})", clazz.getSimpleName(), version);
+                }
+            }
+        } catch (final ClassNotFoundException cnfe) {
+            this.logger.error(catching(cnfe));
+        }
 
         if (this.logger.isTraceEnabled()) {
             this.logger.trace(exitWith(version));
