@@ -1,6 +1,7 @@
 package net.jmp.demo.gson;
 
 /*
+ * (#)Main.java 0.11.0  10/20/2024
  * (#)Main.java 0.10.0  10/15/2024
  * (#)Main.java 0.9.0   10/15/2024
  * (#)Main.java 0.8.0   10/13/2024
@@ -58,7 +59,7 @@ import org.slf4j.LoggerFactory;
 
 /// The main class.
 ///
-/// @version    0.10.0
+/// @version    0.11.0
 /// @since      0.1.0
 final class Main implements Runnable {
     /// The logger.
@@ -140,7 +141,7 @@ final class Main implements Runnable {
 
         Config config = null;
 
-        final String appConfigFileName = System.getProperty("app.config", "config/config.json");
+        final String appConfigFileName = System.getProperty("app.configurationFile", "config/config.json");
         final Gson gson = new Gson();
 
         try (final JsonReader reader = new JsonReader(new FileReader(appConfigFileName))) {
