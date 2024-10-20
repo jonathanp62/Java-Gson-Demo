@@ -28,9 +28,11 @@ package net.jmp.demo.gson.demos;
 
 import com.google.gson.Gson;
 
-import net.jmp.demo.gson.annotations.Version;
-
 import net.jmp.demo.gson.classes.Developer;
+
+import net.jmp.util.extra.demo.Demo;
+import net.jmp.util.extra.demo.DemoClass;
+import net.jmp.util.extra.demo.DemoVersion;
 
 import static net.jmp.util.logging.LoggerUtils.*;
 
@@ -41,7 +43,8 @@ import org.slf4j.LoggerFactory;
 ///
 /// @version    0.6.0
 /// @since      0.6.0
-@Version(0.6)
+@DemoClass
+@DemoVersion(0.6)
 public final class InnerClassDemo implements Demo {
     /// The logger.
     private final Logger logger = LoggerFactory.getLogger(this.getClass().getName());

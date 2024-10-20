@@ -1,7 +1,7 @@
 package net.jmp.demo.gson.classes;
 
 /*
- * (#)Main.java 0.10.0  10/15/2024
+ * (#)Config.java   0.10.0  10/15/2024
  *
  * MIT License
  *

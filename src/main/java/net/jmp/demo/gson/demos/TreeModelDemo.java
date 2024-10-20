@@ -30,9 +30,11 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
-import net.jmp.demo.gson.annotations.Version;
-
 import net.jmp.demo.gson.classes.User;
+
+import net.jmp.util.extra.demo.Demo;
+import net.jmp.util.extra.demo.DemoClass;
+import net.jmp.util.extra.demo.DemoVersion;
 
 import static net.jmp.util.logging.LoggerUtils.*;
 
@@ -43,7 +45,8 @@ import org.slf4j.LoggerFactory;
 ///
 /// @version    0.9.0
 /// @since      0.9.0
-@Version(0.9)
+@DemoClass
+@DemoVersion(0.9)
 public final class TreeModelDemo implements Demo {
     /// The logger.
     private final Logger logger = LoggerFactory.getLogger(this.getClass().getName());

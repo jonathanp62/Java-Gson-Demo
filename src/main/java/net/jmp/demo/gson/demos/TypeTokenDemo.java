@@ -36,9 +36,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
-import net.jmp.demo.gson.annotations.Version;
-
 import net.jmp.util.extra.WrappedObject;
+
+import net.jmp.util.extra.demo.Demo;
+import net.jmp.util.extra.demo.DemoClass;
+import net.jmp.util.extra.demo.DemoVersion;
 
 import static net.jmp.util.logging.LoggerUtils.*;
 
@@ -49,7 +51,8 @@ import org.slf4j.LoggerFactory;
 ///
 /// @version    0.5.0
 /// @since      0.5.0
-@Version(0.5)
+@DemoClass
+@DemoVersion(0.5)
 public final class TypeTokenDemo implements Demo {
     /// The logger.
     private final Logger logger = LoggerFactory.getLogger(this.getClass().getName());

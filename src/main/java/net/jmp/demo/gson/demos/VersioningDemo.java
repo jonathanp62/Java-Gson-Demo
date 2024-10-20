@@ -32,9 +32,11 @@ import com.google.gson.GsonBuilder;
 
 import net.jmp.demo.gson.adapters.PersonAdapter;
 
-import net.jmp.demo.gson.annotations.Version;
-
 import net.jmp.demo.gson.classes.Person;
+
+import net.jmp.util.extra.demo.Demo;
+import net.jmp.util.extra.demo.DemoClass;
+import net.jmp.util.extra.demo.DemoVersion;
 
 import static net.jmp.util.logging.LoggerUtils.*;
 
@@ -45,7 +47,8 @@ import org.slf4j.LoggerFactory;
 ///
 /// @version    0.7.0
 /// @since      0.4.0
-@Version(0.4)
+@DemoClass
+@DemoVersion(0.4)
 public final class VersioningDemo implements Demo {
     /// The logger.
     private final Logger logger = LoggerFactory.getLogger(this.getClass().getName());

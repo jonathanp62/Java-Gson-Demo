@@ -33,9 +33,11 @@ import net.jmp.demo.gson.adapters.MemberDeserializer;
 import net.jmp.demo.gson.adapters.MemberSerializer;
 import net.jmp.demo.gson.adapters.StudentAdapter;
 
-import net.jmp.demo.gson.annotations.Version;
-
 import net.jmp.demo.gson.classes.*;
+
+import net.jmp.util.extra.demo.Demo;
+import net.jmp.util.extra.demo.DemoClass;
+import net.jmp.util.extra.demo.DemoVersion;
 
 import static net.jmp.util.logging.LoggerUtils.*;
 
@@ -46,7 +48,8 @@ import org.slf4j.LoggerFactory;
 ///
 /// @version    0.2.0
 /// @since      0.2.0
-@Version(0.2)
+@DemoClass
+@DemoVersion(0.2)
 public final class AdaptersDemo implements Demo {
     /// The logger.
     private final Logger logger = LoggerFactory.getLogger(this.getClass().getName());
