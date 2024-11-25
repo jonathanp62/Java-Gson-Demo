@@ -6,7 +6,7 @@ A program that demonstrates using Gson in a variety of ways, but mostly focused 
 Configuration
 ~~~~~~~~~~~~~
 
-Application configuration is supplied in *config/config.json* via the java system property *-Dapp.configurationFile=config/config.json*.
+Application configuration is supplied in *config/config.json* via the Java system property *-Dapp.configurationFile=config/config.json*.
 
 Logging
 ~~~~~~~
